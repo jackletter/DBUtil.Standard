@@ -22,7 +22,8 @@ namespace DBUtil
 
         public bool IsTran { set; get; }
 
-        /// <summary>打开连接测试
+        /// <summary>
+        /// 打开连接测试
         /// </summary>
         /// <returns></returns>
         public Result OpenTest()
@@ -46,11 +47,13 @@ namespace DBUtil
             }
         }
 
-        /// <summary>当前数据库使用的参数的前缀符号
+        /// <summary>
+        /// 当前数据库使用的参数的前缀符号
         /// </summary>
         public string paraPrefix { get { return ":"; } }
 
-        /// <summary>创建参数
+        /// <summary>
+        /// 创建参数
         /// </summary>
         /// <returns></returns>
         public IDbDataParameter CreatePara()
@@ -59,7 +62,8 @@ namespace DBUtil
         }
 
 
-        /// <summary>创建具有名称和值的参数
+        /// <summary>
+        /// 创建具有名称和值的参数
         /// </summary>
         /// <returns>针对当前数据库类型的参数对象</returns>
         public IDbDataParameter CreatePara(string name, object value)
@@ -68,11 +72,12 @@ namespace DBUtil
         }
 
 
-        /// <summary>根据指定日期范围生成过滤字符串
+        /// <summary>
+        /// 根据指定日期范围生成过滤字符串
         /// </summary>
         /// <param name="dateColumn">要进行过滤的字段名称</param>
         /// <param name="minDate">最小日期</param>
-        /// <param name="MaxDate">最大日期</param>
+        /// <param name="maxDate">最大日期</param>
         /// <param name="isMinInclude">最小日期是否包含</param>
         /// <param name="isMaxInclude">最大日期是否包含</param>
         /// <returns>返回生成的过滤字符串</returns>
@@ -106,7 +111,8 @@ namespace DBUtil
             }
         }
 
-        /// <summary>执行sql语句
+        /// <summary>
+        /// 执行sql语句
         /// </summary>
         /// <param name="strSql">要执行的sql语句</param>
         /// <returns>受影响的行数</returns>
@@ -142,7 +148,8 @@ namespace DBUtil
 
         }
 
-        /// <summary>执行多个sql语句
+        /// <summary>
+        /// 执行多个sql语句
         /// </summary>
         /// <param name="strSql">多个SQL语句的数组</param>
         public void ExecuteSql(string[] strSql)
@@ -180,7 +187,8 @@ namespace DBUtil
         }
 
 
-        /// <summary>执行带参数的sql语句
+        /// <summary>
+        /// 执行带参数的sql语句
         /// </summary>
         /// <param name="strSql">要执行的sql语句</param>
         /// <param name="paramArr">参数数组</param>
@@ -218,7 +226,8 @@ namespace DBUtil
         }
 
 
-        /// <summary>批量执行带参数的sql语句
+        /// <summary>
+        /// 批量执行带参数的sql语句
         /// </summary>
         /// <param name="strSql"></param>
         /// <param name="paraArrs"></param>
@@ -231,7 +240,8 @@ namespace DBUtil
         }
 
 
-        /// <summary>向一个表中添加一行数据
+        /// <summary>
+        /// 向一个表中添加一行数据
         /// </summary>
         /// <param name="tableName">表名</param>
         /// <param name="ht">列名和值得键值对</param>
@@ -258,8 +268,24 @@ namespace DBUtil
             return ExecuteSql(strSql, paras.ToArray()) > 0 ? true : false;
         }
 
+        /// <summary>
+        /// 向一个表中添加一行数据
+        /// </summary>
+        /// <param name="tableName">表名</param>
+        /// <param name="dic">列名和值得键值对</param>
+        /// <returns>返回是受影响的行数</returns>
+        public bool AddData(string tableName, Dictionary<string, object> dic)
+        {
+            Hashtable ht = new Hashtable();
+            foreach (var i in dic)
+            {
+                ht.Add(i.Key, i.Value);
+            }
+            return AddData(tableName, ht);
+        }
 
-        /// <summary>根据键值表ht中的数据向表中更新数据
+        /// <summary>
+        /// 根据键值表中的数据向表中更新数据
         /// </summary>
         /// <param name="tableName">表名</param>
         /// <param name="ht">键值表</param>
@@ -291,8 +317,26 @@ namespace DBUtil
             return ExecuteSql(sql, paras.ToArray()) > 0 ? true : false;
         }
 
+        /// <summary>
+        /// 根据键值表中的数据向表中更新数据
+        /// </summary>
+        /// <param name="tableName">表名</param>
+        /// <param name="dic">键值表</param>
+        /// <param name="filterStr">过滤条件以and开头</param>
+        /// <returns>是否更新成功</returns>
+        public bool UpdateData(string tableName, Dictionary<string, object> dic, string filterStr)
+        {
+            Hashtable ht = new Hashtable();
+            foreach (var i in dic)
+            {
+                ht.Add(i.Key, i.Value);
+            }
+            return UpdateData(tableName, ht, filterStr);
+        }
 
-        /// <summary>根据键值表ht中的数据向表中更新数据
+
+        /// <summary>
+        /// 根据键值表中的数据向表中更新数据
         /// </summary>
         /// <param name="tableName">表名</param>
         /// <param name="ht">键值表</param>
@@ -332,7 +376,26 @@ namespace DBUtil
             return ExecuteSql(sql, paras.ToArray()) > 0 ? true : false;
         }
 
-        /// <summary>向表中更新或添加数据并根据ht里面的键值对作为关键字更新(关键字默认不参与更新)
+        /// <summary>
+        /// 根据键值表中的数据向表中更新数据
+        /// </summary>
+        /// <param name="tableName">表名</param>
+        /// <param name="dic">键值表</param>
+        /// <param name="filterStr">过滤条件以and开头</param>
+        /// <param name="paraArr">过滤条件中的参数数组</param>
+        /// <returns>是否更新成功</returns>
+        public bool UpdateData(string tableName, Dictionary<string, object> dic, string filterStr, IDbDataParameter[] paraArr)
+        {
+            Hashtable ht = new Hashtable();
+            foreach (var i in dic)
+            {
+                ht.Add(i.Key, i.Value);
+            }
+            return UpdateData(tableName, dic, filterStr, paraArr);
+        }
+
+        /// <summary>
+        /// 向表中更新或添加数据并根据键值对作为关键字更新(关键字默认不参与更新)
         /// </summary>
         /// <param name="tableName">表名</param>
         /// <param name="ht">键值表</param>
@@ -381,7 +444,26 @@ namespace DBUtil
             return ExecuteSql(sql, paras.ToArray()) > 0 ? true : false;
         }
 
-        /// <summary>根据键值表ht中的数据向表中添加或更新数据
+        /// <summary>
+        /// 向表中更新数据并根据键值表里面的键值对作为关键字更新(关键字默认不参与更新)
+        /// </summary>
+        /// <param name="tableName">表名</param>
+        /// <param name="dic">键值表</param>
+        /// <param name="keys">关键字集合</param>
+        /// <param name="isKeyAttend">关键字是否参与到更新中</param>
+        /// <returns>是否更新成功</returns>
+        public bool UpdateData(string tableName, Dictionary<string, object> dic, List<string> keys, bool isKeyAttend = false)
+        {
+            Hashtable ht = new Hashtable();
+            foreach (var i in dic)
+            {
+                ht.Add(i.Key, i.Value);
+            }
+            return UpdateData(tableName, ht, keys, isKeyAttend);
+        }
+
+        /// <summary>
+        /// 根据键值表中的数据向表中添加或更新数据
         /// </summary>
         /// <param name="tableName">表名</param>
         /// <param name="ht">键值表</param>
@@ -399,7 +481,25 @@ namespace DBUtil
             }
         }
 
-        /// <summary>根据键值表ht中的数据向表中添加或更新数据
+        /// <summary>
+        /// 根据键值表中的数据向表中添加或更新数据
+        /// </summary>
+        /// <param name="tableName">表名</param>
+        /// <param name="dic">键值表</param>
+        /// <param name="filterStr">过滤条件以and开头</param>
+        /// <returns>是否更新成功</returns>
+        public bool UpdateOrAdd(string tableName, Dictionary<string, object> dic, string filterStr)
+        {
+            Hashtable ht = new Hashtable();
+            foreach (var i in dic)
+            {
+                ht.Add(i.Key, i.Value);
+            }
+            return UpdateOrAdd(tableName, ht, filterStr);
+        }
+
+        /// <summary>
+        /// 根据键值表ht中的数据向表中添加或更新数据
         /// </summary>
         /// <param name="tableName">表名</param>
         /// <param name="ht">键值表</param>
@@ -418,7 +518,26 @@ namespace DBUtil
             }
         }
 
-        /// <summary>向表中添加或更新数据并根据ht里面的键值对作为关键字更新(关键字默认不参与更新)
+        /// <summary>
+        /// 根据键值表中的数据向表中添加或更新数据
+        /// </summary>
+        /// <param name="tableName">表名</param>
+        /// <param name="dic">键值表</param>
+        /// <param name="filterStr">过滤条件以and开头</param>
+        /// <param name="paraArr">过滤条件中的参数数组</param>
+        /// <returns>是否更新成功</returns>
+        public bool UpdateOrAdd(string tableName, Dictionary<string, object> dic, string filterStr, IDbDataParameter[] paraArr)
+        {
+            Hashtable ht = new Hashtable();
+            foreach (var i in dic)
+            {
+                ht.Add(i.Key, i.Value);
+            }
+            return UpdateOrAdd(tableName, ht, filterStr, paraArr);
+        }
+
+        /// <summary>
+        /// 向表中添加或更新数据并根据ht里面的键值对作为关键字更新(关键字默认不参与更新)
         /// </summary>
         /// <param name="tableName">表名</param>
         /// <param name="ht">键值表</param>
@@ -444,7 +563,26 @@ namespace DBUtil
             }
         }
 
-        /// <summary>判断参数集合list中是否包含同名的参数para,如果已存在返回true,否则返回false
+        /// <summary>
+        /// 向表中添加或更新数据并根据键值对作为关键字更新(关键字默认不参与更新)
+        /// </summary>
+        /// <param name="tableName">表名</param>
+        /// <param name="dic">键值表</param>
+        /// <param name="keys">关键字集合</param>
+        /// <param name="isKeyAttend">关键字是否参与到更新中</param>
+        /// <returns>是否更新成功</returns>
+        public bool UpdateOrAdd(string tableName, Dictionary<string, object> dic, List<string> keys, bool isKeyAttend = false)
+        {
+            Hashtable ht = new Hashtable();
+            foreach (var i in dic)
+            {
+                ht.Add(i.Key, i.Value);
+            }
+            return UpdateOrAdd(tableName, ht, keys, isKeyAttend);
+        }
+
+        /// <summary>
+        /// 判断参数集合list中是否包含同名的参数para,如果已存在返回true,否则返回false
         /// </summary>
         /// <param name="list">参数集合</param>
         /// <param name="para">参数模型</param>
@@ -462,7 +600,8 @@ namespace DBUtil
         }
 
 
-        /// <summary>删除一行
+        /// <summary>
+        /// 删除一行
         /// </summary>
         /// <param name="tableName">表名</param>
         /// <param name="strFilter">过滤条件以and开头</param>
@@ -474,7 +613,8 @@ namespace DBUtil
         }
 
 
-        /// <summary>删除一行
+        /// <summary>
+        /// 删除一行
         /// </summary>
         /// <param name="tableName">表名</param>
         /// <param name="strFilter">过滤条件</param>
@@ -487,7 +627,8 @@ namespace DBUtil
         }
 
 
-        /// <summary>返回查到的第一行第一列的值
+        /// <summary>
+        /// 返回查到的第一行第一列的值
         /// </summary>
         /// <param name="strSql">sql语句</param>
         /// <returns>返回查到的第一行第一列的值</returns>
@@ -514,7 +655,8 @@ namespace DBUtil
         }
 
 
-        /// <summary>返回查到的第一行第一列的值
+        /// <summary>
+        /// 返回查到的第一行第一列的值
         /// </summary>
         /// <param name="strSql">sql语句</param>
         /// <param name="paraArr">sql语句参数</param>
@@ -542,7 +684,8 @@ namespace DBUtil
         }
 
 
-        /// <summary>返回查到的第一行第一列的字符串值(调用GetFirstColumn,将返回的对象转换成字符串,如果为null就转化为"")
+        /// <summary>
+        /// 返回查到的第一行第一列的字符串值(调用GetFirstColumn,将返回的对象转换成字符串,如果为null就转化为"")
         /// </summary>
         /// <param name="strSql">sql语句</param>
         /// <param name="isReturnNull">当查询结果为null是是否将null返回,为true则返回null,为false则返回"",默认为false</param>
@@ -570,7 +713,8 @@ namespace DBUtil
 
 
 
-        /// <summary>返回查到的第一行第一列的字符串值
+        /// <summary>
+        /// 返回查到的第一行第一列的字符串值
         /// </summary>
         /// <param name="strSql">sql语句</param>
         /// <param name="paraArr">sql语句中的参数数组</param>
@@ -597,7 +741,8 @@ namespace DBUtil
         }
 
 
-        /// <summary>获取阅读器
+        /// <summary>
+        /// 获取阅读器
         /// </summary>
         /// <param name="strSql">sql语句</param>
         /// <returns>返回阅读器</returns>
@@ -617,7 +762,8 @@ namespace DBUtil
         }
 
 
-        /// <summary>获取阅读器
+        /// <summary>
+        /// 获取阅读器
         /// </summary>
         /// <param name="strSql">sql语句</param>
         /// <returns>返回阅读器</returns>
@@ -639,7 +785,8 @@ namespace DBUtil
 
 
 
-        /// <summary>返回查询结果的数据集
+        /// <summary>
+        /// 返回查询结果的数据集
         /// </summary>
         /// <param name="strSql">sql语句</param>
         /// <returns>返回的查询结果集</returns>
@@ -668,7 +815,8 @@ namespace DBUtil
 
 
 
-        /// <summary>返回查询结果的数据集
+        /// <summary>
+        /// 返回查询结果的数据集
         /// </summary>
         /// <param name="strSql">sql语句</param>
         /// <param name="paraArr">SQL语句中的参数集合</param>
@@ -699,7 +847,8 @@ namespace DBUtil
 
 
 
-        /// <summary>返回查询结果的数据表
+        /// <summary>
+        /// 返回查询结果的数据表
         /// </summary>
         /// <param name="strSql">sql语句</param>
         /// <returns>返回的查询数据表</returns>
@@ -717,7 +866,8 @@ namespace DBUtil
 
 
 
-        /// <summary>返回的查询数据表
+        /// <summary>
+        /// 返回的查询数据表
         /// </summary>
         /// <param name="strSql">sql语句</param>
         /// <param name="paraArr">SQL语句中的参数集合</param>
@@ -736,7 +886,8 @@ namespace DBUtil
 
 
 
-        /// <summary>开启事务
+        /// <summary>
+        /// 开启事务
         /// </summary>
         public void BeginTrans()
         {
@@ -754,7 +905,8 @@ namespace DBUtil
         }
 
 
-        /// <summary>提交事务
+        /// <summary>
+        /// 提交事务
         /// </summary>
         public void Commit()
         {
@@ -762,7 +914,8 @@ namespace DBUtil
         }
 
 
-        /// <summary>回滚事务
+        /// <summary>
+        /// 回滚事务
         /// </summary>
         public void Rollback()
         {
@@ -771,7 +924,8 @@ namespace DBUtil
 
 
 
-        /// <summary>判断指定表中是否有某一列
+        /// <summary>
+        /// 判断指定表中是否有某一列
         /// </summary>
         /// <param name="tableName">表名</param>
         /// <param name="columnName">列名</param>
@@ -792,7 +946,8 @@ namespace DBUtil
 
 
 
-        /// <summary>判断表是否存在
+        /// <summary>
+        /// 判断表是否存在
         /// </summary>
         /// <param name="tableName">表名</param>
         /// <returns>返回表是否存在</returns>
@@ -810,25 +965,8 @@ namespace DBUtil
             }
         }
 
-
-
-        /// <summary>获得分页的查询语句
-        /// </summary>
-        /// <param name="tableName">表名</param>
-        /// <param name="selectColumns">要查询的列,为null是表示所有列</param>
-        /// <param name="PageSize">分页大小</param>
-        /// <param name="PageIndex">分页索引</param>
-        /// <param name="strWhere">过滤条件</param>
-        /// <param name="strOrder">排序条件</param>
-        /// <returns>返回经过分页的语句</returns>
-        public string GetSqlForPageSize(string tableName, string[] selectColumns, int PageSize, int PageIndex, string strWhere, string strOrder)
-        {
-            throw new NotFiniteNumberException("不建议使用这种方法分页!");
-        }
-
-
-
-        /// <summary>获得分页的查询语句
+        /// <summary>
+        /// 获得分页的查询语句
         /// </summary>
         /// <param name="selectSql">查询sql如:select name,id from test where id>5</param>
         /// <param name="strOrder">排序字句如:order by id desc</param>
@@ -842,7 +980,8 @@ namespace DBUtil
         }
 
 
-        /// <summary>实现释放资源的方法
+        /// <summary>
+        /// 实现释放资源的方法
         /// </summary>
         public void Dispose()
         {
@@ -854,13 +993,12 @@ namespace DBUtil
                     this.IsOpen = false;
                 }
             }
-            catch (Exception e)
-            {
-            }
+            catch { }
         }
 
 
-        /// <summary>获得所有表,注意返回的集合中的表模型中只有表名
+        /// <summary>
+        /// 获得所有表,注意返回的集合中的表模型中只有表名
         /// </summary>
         /// <returns></returns>
         public List<TableStruct> ShowTables()
@@ -883,7 +1021,8 @@ namespace DBUtil
         }
 
 
-        /// <summary>获得指定表的表结构说明
+        /// <summary>
+        /// 获得指定表的表结构说明
         /// </summary>
         /// <param name="tableName">表名</param>
         /// <returns></returns>
@@ -1033,7 +1172,8 @@ select t.attname 列名,cc.relname  索引名 ,t.relname 表名 from (select a.a
         }
 
 
-        /// <summary>获取当前数据库的用户自定义函数
+        /// <summary>
+        /// 获取当前数据库的用户自定义函数
         /// </summary>
         /// <returns></returns>
         public List<Func> GetFuncs()
@@ -1066,7 +1206,8 @@ select t.attname 列名,cc.relname  索引名 ,t.relname 表名 from (select a.a
             return res;
         }
 
-        /// <summary>获取当前数据库的用户自定义存储过程
+        /// <summary>
+        /// 获取当前数据库的用户自定义存储过程
         /// </summary>
         /// <returns></returns>
         public List<Proc> GetProcs()
@@ -1089,7 +1230,8 @@ select t.attname 列名,cc.relname  索引名 ,t.relname 表名 from (select a.a
             return res;
         }
 
-        /// <summary>批量获得指定表的表结构说明
+        /// <summary>
+        /// 批量获得指定表的表结构说明
         /// </summary>
         /// <param name="tableNames">表名集合</param>
         /// <returns></returns>
@@ -1105,7 +1247,8 @@ select t.attname 列名,cc.relname  索引名 ,t.relname 表名 from (select a.a
 
 
         /// <summary>
-        /// 重命名指定表</summary>
+        /// 重命名指定表
+        /// </summary>
         /// <param name="oldTableName">旧表名</param>
         /// <param name="newTableName">新表名</param>
         public void RenameTable(string oldTableName, string newTableName)
@@ -1119,7 +1262,8 @@ select t.attname 列名,cc.relname  索引名 ,t.relname 表名 from (select a.a
 
 
 
-        /// <summary>删除指定表
+        /// <summary>
+        /// 删除指定表
         /// </summary>
         /// <param name="tableName">要删除的表</param>
         /// <returns></returns>
@@ -1137,7 +1281,8 @@ select t.attname 列名,cc.relname  索引名 ,t.relname 表名 from (select a.a
 
 
 
-        /// <summary>保存表说明,如果不存在旧的说明信息就创建否则就覆盖
+        /// <summary>
+        /// 保存表说明,如果不存在旧的说明信息就创建否则就覆盖
         /// </summary>
         /// <param name="tableName">表名</param>
         /// <param name="desc">说明信息</param>
@@ -1153,7 +1298,8 @@ select t.attname 列名,cc.relname  索引名 ,t.relname 表名 from (select a.a
         }
 
 
-        /// <summary>重命名列名
+        /// <summary>
+        /// 重命名列名
         /// </summary>
         /// <param name="tableName">表名</param>
         /// <param name="oldColumnName">旧的列名</param>
@@ -1166,7 +1312,8 @@ select t.attname 列名,cc.relname  索引名 ,t.relname 表名 from (select a.a
         }
 
 
-        /// <summary>删除指定表的指定列
+        /// <summary>
+        /// 删除指定表的指定列
         /// </summary>
         /// <param name="tableName">表名</param>
         /// <param name="columnName">要删除的列名</param>
@@ -1179,7 +1326,8 @@ select t.attname 列名,cc.relname  索引名 ,t.relname 表名 from (select a.a
         }
 
 
-        /// <summary>保存指定表的指定列的说明信息
+        /// <summary>
+        /// 保存指定表的指定列的说明信息
         /// </summary>
         /// <param name="tableName">表名</param>
         /// <param name="columnName">列名</param>
@@ -1191,7 +1339,8 @@ select t.attname 列名,cc.relname  索引名 ,t.relname 表名 from (select a.a
             ExecuteSql(sql);
         }
 
-        /// <summary>改变指定表的指定列类型
+        /// <summary>
+        /// 改变指定表的指定列类型
         /// </summary>
         /// <param name="tableName">表名</param>
         /// <param name="columnName">列名</param>
@@ -1223,7 +1372,8 @@ select t.attname 列名,cc.relname  索引名 ,t.relname 表名 from (select a.a
             }
         }
 
-        /// <summary>修改指定表的指定列是否可以为空
+        /// <summary>
+        /// 修改指定表的指定列是否可以为空
         /// </summary>
         /// <param name="tableName">表名</param>
         /// <param name="columnName">列名</param>
@@ -1236,7 +1386,8 @@ select t.attname 列名,cc.relname  索引名 ,t.relname 表名 from (select a.a
             ExecuteSql(sql);
         }
 
-        /// <summary>给指定表增加自增列
+        /// <summary>
+        /// 给指定表增加自增列
         /// </summary>
         /// <param name="tableName">表名</param>
         /// <param name="columnName">列名</param>
@@ -1250,7 +1401,8 @@ select t.attname 列名,cc.relname  索引名 ,t.relname 表名 from (select a.a
             ExecuteSql(sql);
         }
 
-        /// <summary>给指定列修改默认值
+        /// <summary>
+        /// 给指定列修改默认值
         /// </summary>
         /// <param name="tableName">表名</param>
         /// <param name="columnName">列名</param>
@@ -1282,7 +1434,8 @@ select t.attname 列名,cc.relname  索引名 ,t.relname 表名 from (select a.a
             }
         }
 
-        /// <summary>删除指定表指定列的默认值
+        /// <summary>
+        /// 删除指定表指定列的默认值
         /// </summary>
         /// <param name="tableName">表名</param>
         /// <param name="columnName">列名</param>
@@ -1301,7 +1454,8 @@ select t.attname 列名,cc.relname  索引名 ,t.relname 表名 from (select a.a
             }
         }
 
-        /// <summary>创建新表
+        /// <summary>
+        /// 创建新表
         /// </summary>
         /// <param name="tableStruct">表结构说明</param>
         /// <returns></returns>
@@ -1384,7 +1538,8 @@ EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'{0}' , @level0
 
         }
 
-        /// <summary>给指定表添加一列
+        /// <summary>
+        /// 给指定表添加一列
         /// </summary>
         /// <param name="tableName">表名</param>
         /// <param name="column">列名</param>
@@ -1416,7 +1571,8 @@ EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'{0}' , @level0
             }
         }
 
-        /// <summary>设置指定列是否是唯一的
+        /// <summary>
+        /// 设置指定列是否是唯一的
         /// </summary>
         /// <param name="tableName">表名</param>
         /// <param name="columnName">列名</param>
@@ -1447,7 +1603,8 @@ SELECT idx.name
             }
         }
 
-        /// <summary>准备数据导出的存储过程,这将重建usp_CreateInsertScript
+        /// <summary>
+        /// 准备数据导出的存储过程,这将重建usp_CreateInsertScript
         /// </summary>
         public void PreExportDataProc()
         {
@@ -1458,7 +1615,8 @@ SELECT idx.name
             ExecuteSql(sqlExportDataProc);
         }
 
-        /// <summary>根据表结构对象生成建表语句
+        /// <summary>
+        /// 根据表结构对象生成建表语句
         /// </summary>
         /// <param name="tableStruct"></param>
         /// <returns></returns>
@@ -1587,7 +1745,8 @@ EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'{0}' , @level0
             return res;
         }
 
-        /// <summary>根据视图名称生成视图建立语句
+        /// <summary>
+        /// 根据视图名称生成视图建立语句
         /// </summary>
         /// <param name="viewName">视图名称</param>
         /// <returns></returns>
@@ -1597,7 +1756,8 @@ EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'{0}' , @level0
             return GetFirstColumnString(sql);
         }
 
-        /// <summary>根据存储过程名字生成存储过程的创建语句
+        /// <summary>
+        /// 根据存储过程名字生成存储过程的创建语句
         /// </summary>
         /// <param name="procName">存储过程名字</param>
         /// <returns></returns>
@@ -1607,7 +1767,8 @@ EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'{0}' , @level0
             return GetFirstColumnString(sql);
         }
 
-        /// <summary>根据函数名生成函数的创建语句
+        /// <summary>
+        /// 根据函数名生成函数的创建语句
         /// </summary>
         /// <param name="funcName">函数名称</param>
         /// <returns></returns>
@@ -1626,7 +1787,8 @@ EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'{0}' , @level0
             return sb.ToString();
         }
 
-        /// <summary>根据表名称和过滤条件生成表数据的insert语句
+        /// <summary>
+        /// 根据表名称和过滤条件生成表数据的insert语句
         /// </summary>
         /// <param name="tblName">表结构</param>
         /// <param name="Count">生成的insert语句的个数</param>
@@ -1646,7 +1808,8 @@ EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'{0}' , @level0
             return sb.ToString();
         }
 
-        /// <summary>包装对象名称,如果非全部小写,自动添加双引号
+        /// <summary>
+        /// 包装对象名称,如果非全部小写,自动添加双引号
         /// </summary>
         /// <param name="tableName"></param>
         /// <returns></returns>
@@ -1717,7 +1880,8 @@ end
 ";
         #endregion
 
-        /// <summary>根据当前的数据库类型和连接字符串创建一个新的数据库操作对象
+        /// <summary>
+        /// 根据当前的数据库类型和连接字符串创建一个新的数据库操作对象
         /// </summary>
         /// <returns></returns>
         public IDbAccess CreateNewIDB()

@@ -1,0 +1,2774 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DBUtil.Standard</name>
+    </assembly>
+    <members>
+        <member name="T:DBUtil.IDbAccess">
+            <summary>
+            数据库访问对象
+            </summary>
+        </member>
+        <member name="P:DBUtil.IDbAccess.IDSNOManager">
+            <summary>
+            ID和编号生成管理器,只读
+            </summary>
+        </member>
+        <member name="P:DBUtil.IDbAccess.IsKeepConnect">
+            <summary>
+            是否保持连接不断开
+            </summary>
+        </member>
+        <member name="P:DBUtil.IDbAccess.tran">
+            <summary>
+            事物对象
+            </summary>
+        </member>
+        <member name="P:DBUtil.IDbAccess.ConnectionString">
+            <summary>
+            连接字符串
+            </summary>
+        </member>
+        <member name="P:DBUtil.IDbAccess.conn">
+            <summary>
+            连接对象
+            </summary>
+        </member>
+        <member name="P:DBUtil.IDbAccess.DataBaseType">
+            <summary>
+            数据库类型
+            </summary>
+        </member>
+        <member name="P:DBUtil.IDbAccess.IsOpen">
+            <summary>
+            记录是否打开了连接,防止多次打开连接
+            </summary>
+        </member>
+        <member name="P:DBUtil.IDbAccess.IsTran">
+            <summary>
+            记录是否开启了事务,防止多次开启事务
+            </summary>
+        </member>
+        <member name="M:DBUtil.IDbAccess.OpenTest">
+            <summary>
+            打开连接测试
+            </summary>
+        </member>
+        <member name="P:DBUtil.IDbAccess.paraPrefix">
+            <summary>
+            当前数据库使用的参数的前缀符号
+            </summary>
+        </member>
+        <member name="M:DBUtil.IDbAccess.CreatePara">
+            <summary>
+            创建参数
+            </summary>
+            <returns>针对当前数据库类型的空参数对象</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.CreatePara(System.String,System.Object)">
+            <summary>
+            创建具有名称和值的参数
+            </summary>
+            <returns>针对当前数据库类型的参数对象</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.GetDateFilter(System.String,System.String,System.String,System.Boolean,System.Boolean)">
+            <summary>
+            根据指定日期范围生成过滤字符串</summary>
+            <param name="dateColumn">要进行过滤的字段名称</param>
+            <param name="minDate">最小日期</param>
+            <param name="MaxDate">最大日期</param>
+            <param name="isMinInclude">最小日期是否包含</param>
+            <param name="isMaxInclude">最大日期是否包含</param>
+            <returns>返回生成的过滤字符串</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.ExecuteSql(System.String)">
+            <summary>
+            执行sql语句
+            </summary>
+            <param name="strSql">要执行的sql语句</param>
+            <returns>受影响的行数</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.ExecuteSql(System.String,System.Data.IDataParameter[])">
+            <summary>
+            执行sql语句
+            </summary>
+            <param name="strSql">要执行的sql语句</param>
+            <returns>受影响的行数</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.ExecuteSql(System.String[])">
+            <summary>
+            执行多个sql语句
+            </summary>
+            <param name="strSql">多个SQL语句的数组</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.ExecuteSql(System.String[],System.Data.IDataParameter[][])">
+            <summary>
+            执行多个sql语句</summary>
+            <param name="strSql">多个SQL语句的数组</param>
+            <param name="paraArrs">多个SQL语句的参数对应的二维数组</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.AddData(System.String,System.Collections.Hashtable)">
+            <summary>
+            向一个表中添加一行数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">列名和值的键值对</param>
+            <returns>是否插入成功</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.AddData(System.String,System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            向一个表中添加一行数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">列名和值的键值对</param>
+            <returns>是否插入成功</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.UpdateData(System.String,System.Collections.Hashtable,System.String)">
+            <summary>
+            根据键值表中的数据向表中更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.UpdateData(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String)">
+            <summary>
+            根据键值表中的数据向表中更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.UpdateData(System.String,System.Collections.Hashtable,System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            根据键值表中的数据向表中更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <param name="paraArr">过滤条件中的参数数组</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.UpdateData(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            根据键值表中的数据向表中更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <param name="paraArr">过滤条件中的参数数组</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.UpdateData(System.String,System.Collections.Hashtable,System.Collections.Generic.List{System.String},System.Boolean)">
+            <summary>
+            向表中更新数据并根据指定的键值对作为关键字更新(关键字默认不参与更新)
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="keys">关键字集合</param>
+            <param name="isKeyAttend">关键字是否参与到更新中</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.UpdateData(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Collections.Generic.List{System.String},System.Boolean)">
+            <summary>
+            向表中更新数据并根据指定的键值对作为关键字更新(关键字默认不参与更新)
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="keys">关键字集合</param>
+            <param name="isKeyAttend">关键字是否参与到更新中</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.UpdateOrAdd(System.String,System.Collections.Hashtable,System.String)">
+            <summary>
+            根据键值表中的数据向表中添加或更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.UpdateOrAdd(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String)">
+            <summary>
+            根据键值表中的数据向表中添加或更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.UpdateOrAdd(System.String,System.Collections.Hashtable,System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            根据键值表中的数据向表中添加或更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <param name="paraArr">过滤条件中的参数数组</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.UpdateOrAdd(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            根据键值表中的数据向表中添加或更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <param name="paraArr">过滤条件中的参数数组</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.UpdateOrAdd(System.String,System.Collections.Hashtable,System.Collections.Generic.List{System.String},System.Boolean)">
+            <summary>
+            向表中添加或更新数据并根据里面的键值对作为关键字更新(关键字默认不参与更新)
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="keys">关键字集合</param>
+            <param name="isKeyAttend">关键字是否参与到更新中</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.UpdateOrAdd(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Collections.Generic.List{System.String},System.Boolean)">
+            <summary>
+            向表中添加或更新数据并根据里面的键值对作为关键字更新(关键字默认不参与更新)
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="keys">关键字集合</param>
+            <param name="isKeyAttend">关键字是否参与到更新中</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.DeleteTableRow(System.String,System.String)">
+            <summary>
+            删除一行
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="strFilter">过滤条件</param>
+            <returns>返回受影响的行数</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.DeleteTableRow(System.String,System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            删除一行
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="strFilter">过滤条件</param>
+            <param name="paraArr">过滤条件中的参数集合</param>
+            <returns>返回受影响的行数</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.GetFirstColumn(System.String)">
+            <summary>
+            返回查到的第一行第一列的值
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns>返回查到的第一行第一列的值</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.GetFirstColumn(System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            返回查到的第一行第一列的值
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="paraArr">sql语句参数</param>
+            <returns>返回查到的第一行第一列的值</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.GetFirstColumnString(System.String,System.Boolean)">
+            <summary>
+            返回查到的第一行第一列的字符串值(该方法将调用GetFirstColumn,并将返回的对象转换成字符串)
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="isReturnNull">false:查询结果为null就返回""否则返回null</param>
+            <returns>返回查到的第一行第一列的值</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.GetFirstColumnString(System.String,System.Data.IDbDataParameter[],System.Boolean)">
+            <summary>
+            返回查到的第一行第一列的字符串值(该方法将调用GetFirstColumn,并将返回的对象转换成字符串)
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="paraArr">sql语句中的参数数组</param>
+            <param name="isReturnNull">false:查询结果为null就返回""否则返回null</param>
+            <returns>返回查到的第一行第一列的值</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.GetDataReader(System.String)">
+            <summary>
+            获取阅读器
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns>返回阅读器</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.GetDataReader(System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            获取阅读器
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="paraArr">sql语句参数</param>
+            <returns>返回阅读器</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.GetDataSet(System.String)">
+            <summary>
+            返回查询结果的数据集
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns>返回的查询结果集</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.GetDataSet(System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            返回查询结果的数据集
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="paraArr">sql语句参数</param>
+            <returns>返回的查询结果集</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.GetDataTable(System.String)">
+            <summary>
+            返回查询结果的数据表
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns>返回的查询结果集</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.GetDataTable(System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            返回查询结果的数据表
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="paraArr">sql语句参数</param>
+            <returns>返回的查询结果集</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.BeginTrans">
+            <summary>
+            开启事务
+            </summary>
+        </member>
+        <member name="M:DBUtil.IDbAccess.Commit">
+            <summary>
+            提交事务
+            </summary>
+        </member>
+        <member name="M:DBUtil.IDbAccess.Rollback">
+            <summary>
+            回滚事务
+            </summary>
+        </member>
+        <member name="M:DBUtil.IDbAccess.GetSqlForPageSize(System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            获得分页的查询语句
+            </summary>
+            <param name="selectSql">查询子句,如: "select id,name,age from student where age>18"</param>
+            <param name="strOrder">排序子句,如: "order by age desc"</param>
+            <param name="PageSize">分页大小,如:10</param>
+            <param name="PageIndex">当前页索引,如:1(第一页)</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.JudgeColumnExist(System.String,System.String)">
+            <summary>
+            判断指定表或视图中是否有某一列
+            </summary>
+            <param name="tableName">表或视图名</param>
+            <param name="columnName">列名</param>
+            <returns>返回列是否存在</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.JudgeTableOrViewExist(System.String)">
+            <summary>
+            返回表或视图是否存在
+            </summary>
+            <param name="tableName">表或视图名</param>
+            <returns>返回表或视图是否存在</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.ShowTables">
+            <summary>
+            返回所有的表
+            </summary>
+            <returns>返回所有的表</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.ShowViews">
+            <summary>
+            返回所有的视图
+            </summary>
+            <returns>返回所有的视图</returns>
+        </member>
+        <member name="M:DBUtil.IDbAccess.CreateNewIDB">
+            <summary>
+            根据当前的数据库类型和连接字符串创建一个新的数据库操作对象
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:DBUtil.IDBFactory">
+            <summary>
+            根据不同的数据库创建数据库访问对象:IDBAccess
+            </summary>
+        </member>
+        <member name="M:DBUtil.IDBFactory.CreateIDB(System.String,System.String)">
+            <summary>
+            创建IDB对象,注意.netcore中不支持oledb，这里也不再支持oledb、access       
+            </summary>
+            <example>
+            <code>
+            DBUtil.IDbAccess iDb = DBUtil.IDBFactory.CreateIDB("Data Source=.;Initial Catalog=JACKOA;User ID=sa;Password=sa;","SQLSERVER");
+            </code>
+            </example>
+            <param name="connStr">
+            <para>连接字符串:</para>
+            <para>SQLSERVER:   Data Source=.;Initial Catalog=JACKOA;User ID=sa;Password=xx;</para>
+            <para>ORACLE:   Data Source=ORCLmyvm2;Password=sys123;User ID=sys;DBA Privilege=SYSDBA;</para>
+            <para>MYSQL:   Data Source=localhost;Initial Catalog=test;User ID=root;Password=xxxx;</para>
+            <para>POSTGRESQL:   Server=localhost;Port=5432;UserId=postgres;Password=xxxx;Database=test</para>
+            <para>SQLITE:   Data Source=f:\demo.db;</para>
+            </param>
+            <param name="DBType">数据库类型:SQLSERVER、ORACLE、MYSQL、SQLITE、ACCESS、POSTGRESQL</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.IDBFactory.CreateIDB(System.String,DBUtil.DataBaseType)">
+            <summary>
+            创建IDB对象,注意.netcore中不支持oledb，这里也不再支持oledb、access
+            示例:DBUtil.IDbAccess iDb = DBUtil.IDBFactory.CreateIDB("Data Source=.;Initial Catalog=JACKOA;User ID=sa;Password=sa;","SQLSERVER");
+            </summary>
+            <param name="connStr">
+            <para>连接字符串:</para>
+            <para>SQLSERVER:   Data Source=.;Initial Catalog=JACKOA;User ID=sa;Password=xx;</para>
+            <para>ORACLE:   Data Source=ORCLmyvm2;Password=sys123;User ID=sys;DBA Privilege=SYSDBA;</para>
+            <para>MYSQL:   Data Source=localhost;Initial Catalog=test;User ID=root;Password=xxxx;</para>
+            <para>POSTGRESQL:   Server=localhost;Port=5432;UserId=postgres;Password=xxxx;Database=test</para>
+            <para>SQLITE:   Data Source=f:\demo.db;</para>
+            </param>
+            <param name="DBType">数据库类型:SQLSERVER、ORACLE、MYSQL、SQLITE、ACCESS、POSTGRESQL</param>
+            <returns></returns>
+        </member>
+        <member name="F:DBUtil.IDBFactory.IDSNOManage">
+            <summary>
+            不要在程序运行环境中修改此值,但可以在应用程序启动时进行赋值
+            </summary>
+        </member>
+        <member name="T:DBUtil.IDSNOManager">
+            <summary>
+            表的ID和编号的自动生成管理接口
+            </summary>
+        </member>
+        <member name="M:DBUtil.IDSNOManager.NewID(DBUtil.IDbAccess,System.String,System.String)">
+            <summary>
+            根据表名和列名生成ID,第一次生成后就不需要再访问数据库,频率高时使用
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="colName">列名</param>
+            <returns>新生成的ID</returns>
+        </member>
+        <member name="M:DBUtil.IDSNOManager.NewIDForce(DBUtil.IDbAccess,System.String,System.String)">
+            <summary>
+            使用程序锁直接从表的字段里面算得递增值,频率低时使用
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="colName">列名</param>
+            <returns>新生成的ID</returns>
+        </member>
+        <member name="M:DBUtil.IDSNOManager.ResetID(System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            重置一个表的ID
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="colName">列名</param>
+            <param name="val">为null时直接删除这个表和这个列的ID生成控制</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.IDSNOManager.ShowCurrentIDs(System.String,System.String)">
+            <summary>
+            显示程序运行至当前,程序中缓存的表的ID列表(可以选择指定表名、列名)
+            </summary>
+            <param name="tableName">如果指定了tableName就只显示这个表的ID控制情况</param>
+            <param name="colName">如果指定了colName就显示这个表的这个字段的ID控制情况</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.IDSNOManager.AddID(System.String,System.String,System.Int32)">
+            <summary>
+            添加一个ID控制项,并指定初始值(默认为0,即下一个生成使用的为1)(慎用,必须填写正确的表名和字段名,否则无法在故障修复后恢复ID控制)
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="colName">列名</param>
+            <param name="val">初始化值,默认0</param>
+        </member>
+        <member name="M:DBUtil.IDSNOManager.NewSNO(DBUtil.IDbAccess,System.String,System.String,System.Collections.Generic.List{DBUtil.SerialChunk})">
+            <summary>
+            根据表名列名和格式块创建新的自动编号
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="colName">列名</param>
+            <param name="chunks">格式块,格式块的格式参照类：SerialTrunk</param>
+            <returns>生成的自动编号</returns>
+        </member>
+        <member name="M:DBUtil.IDSNOManager.ResetSNO(System.String,System.String,System.Collections.Generic.List{DBUtil.SerialChunk},System.String)">
+            <summary>
+            重置一个序列号控制项的当前编号
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="colName">列名</param>
+            <param name="trunks">chunk集合(这里的每个chunk只要求Name属性不为空即可)</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.IDSNOManager.ShowCurrentSNOs(System.String,System.String,System.Collections.Generic.List{DBUtil.SerialChunk})">
+            <summary>
+            显示当前环境下的当前序列号情况
+            </summary>
+            <param name="tableName">如果指定了tableName就只显示这个表的序列号控制情况</param>
+            <param name="colName">如果指定了colName就显示这个表的这个字段的序列号控制情况</param>
+            <param name="trunks">如果指定了trunks就显示当前格式控制下的序列号情况(根据trunk顺序及Name判别唯一)</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.OpenTest">
+            <summary>
+            打开连接测试
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:DBUtil.MySqlIDbAccess.paraPrefix">
+            <summary>
+            当前数据库使用的参数的前缀符号
+            </summary>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.CreatePara">
+            <summary>
+            创建参数
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.CreatePara(System.String,System.Object)">
+            <summary>
+            创建具有名称和值的参数
+            </summary>
+            <returns>针对当前数据库类型的参数对象</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.GetDateFilter(System.String,System.String,System.String,System.Boolean,System.Boolean)">
+            <summary>
+            根据指定日期范围生成过滤字符串
+            </summary>
+            <param name="dateColumn">要进行过滤的字段名称</param>
+            <param name="minDate">最小日期</param>
+            <param name="maxDate">最大日期</param>
+            <param name="isMinInclude">最小日期是否包含</param>
+            <param name="isMaxInclude">最大日期是否包含</param>
+            <returns>返回生成的过滤字符串</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.ExecuteSql(System.String)">
+            <summary>
+            执行sql语句
+            </summary>
+            <param name="strSql">要执行的sql语句</param>
+            <returns>受影响的行数</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.ExecuteSql(System.String[])">
+            <summary>
+            执行多个sql语句
+            </summary>
+            <param name="strSql">多个SQL语句的数组</param>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.ExecuteSql(System.String,System.Data.IDataParameter[])">
+            <summary>
+            执行带参数的sql语句
+            </summary>
+            <param name="strSql">要执行的sql语句</param>
+            <param name="paramArr">参数数组</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.ExecuteSql(System.String[],System.Data.IDataParameter[][])">
+            <summary>
+            批量执行带参数的sql语句
+            </summary>
+            <param name="strSql"></param>
+            <param name="paraArrs"></param>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.AddData(System.String,System.Collections.Hashtable)">
+            <summary>
+            向一个表中添加一行数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">列名和值的键值对</param>
+            <returns>是否插入成功</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.AddData(System.String,System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            向一个表中添加一行数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">列名和值的键值对</param>
+            <returns>是否插入成功</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.UpdateData(System.String,System.Collections.Hashtable,System.String)">
+            <summary>
+            根据键值表中的数据向表中更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.UpdateData(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String)">
+            <summary>
+            根据键值表中的数据向表中更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.UpdateData(System.String,System.Collections.Hashtable,System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            根据键值表ht中的数据向表中更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <param name="paraArr">过滤条件中的参数数组</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.UpdateData(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            根据键值表中的数据向表中更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <param name="paraArr">过滤条件中的参数数组</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.UpdateData(System.String,System.Collections.Hashtable,System.Collections.Generic.List{System.String},System.Boolean)">
+            <summary>
+            向表中更新数据并根据键值表里面的键值对作为关键字更新(关键字默认不参与更新)
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="keys">关键字集合</param>
+            <param name="isKeyAttend">关键字是否参与到更新中</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.UpdateData(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Collections.Generic.List{System.String},System.Boolean)">
+            <summary>
+            向表中更新数据并根据键值表里面的键值对作为关键字更新(关键字默认不参与更新)
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="keys">关键字集合</param>
+            <param name="isKeyAttend">关键字是否参与到更新中</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.UpdateOrAdd(System.String,System.Collections.Hashtable,System.String)">
+            <summary>
+            根据键值表ht中的数据向表中添加或更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.UpdateOrAdd(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String)">
+            <summary>
+            根据键值表中的数据向表中添加或更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.UpdateOrAdd(System.String,System.Collections.Hashtable,System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            根据键值表中的数据向表中添加或更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <param name="paraArr">过滤条件中的参数数组</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.UpdateOrAdd(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            根据键值表中的数据向表中添加或更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <param name="paraArr">过滤条件中的参数数组</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.UpdateOrAdd(System.String,System.Collections.Hashtable,System.Collections.Generic.List{System.String},System.Boolean)">
+            <summary>
+            向表中添加或更新数据并根据ht里面的键值对作为关键字更新(关键字默认不参与更新)
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="keys">关键字集合</param>
+            <param name="isKeyAttend">关键字是否参与到更新中</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.UpdateOrAdd(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Collections.Generic.List{System.String},System.Boolean)">
+            <summary>
+            向表中添加或更新数据并根据ht里面的键值对作为关键字更新(关键字默认不参与更新)
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="keys">关键字集合</param>
+            <param name="isKeyAttend">关键字是否参与到更新中</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.ContainsDBParameter(System.Collections.Generic.List{System.Data.IDbDataParameter},System.Data.IDbDataParameter)">
+            <summary>
+            判断参数集合list中是否包含同名的参数para,如果已存在返回true,否则返回false
+            </summary>
+            <param name="list">参数集合</param>
+            <param name="para">参数模型</param>
+            <returns>参数集合中是否包含参数模型</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.DeleteTableRow(System.String,System.String)">
+            <summary>
+            删除一行
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="strFilter">过滤条件以and开头</param>
+            <returns>返回受影响的行数</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.DeleteTableRow(System.String,System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            删除一行
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="strFilter">过滤条件</param>
+            <param name="paras">过滤条件中的参数集合</param>
+            <returns>返回受影响的行数</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.GetFirstColumn(System.String)">
+            <summary>
+            返回查到的第一行第一列的值
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns>返回查到的第一行第一列的值</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.GetFirstColumn(System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            返回查到的第一行第一列的值
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="paraArr">sql语句参数</param>
+            <returns>返回查到的第一行第一列的值</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.GetFirstColumnString(System.String,System.Boolean)">
+            <summary>
+            返回查到的第一行第一列的字符串值(调用GetFirstColumn,将返回的对象转换成字符串,如果为null就转化为"")
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="isReturnNull">当查询结果为null是是否将null返回,为true则返回null,为false则返回"",默认为false</param>
+            <returns>返回查到的第一行第一列的值</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.GetFirstColumnString(System.String,System.Data.IDbDataParameter[],System.Boolean)">
+            <summary>
+            返回查到的第一行第一列的字符串值
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="paraArr">sql语句中的参数数组</param>
+            <param name="isReturnNull">false:查询结果为null就返回""否则返回null</param>
+            <returns>返回查到的第一行第一列的值</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.GetDataReader(System.String)">
+            <summary>
+            获取阅读器
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns>返回阅读器</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.GetDataReader(System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            获取阅读器
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns>返回阅读器</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.GetDataSet(System.String)">
+            <summary>
+            返回查询结果的数据集
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns>返回的查询结果集</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.GetDataSet(System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            返回查询结果的数据集
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="paraArr">SQL语句中的参数集合</param>
+            <returns>返回的查询结果集</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.GetDataTable(System.String)">
+            <summary>
+            返回查询结果的数据表
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns>返回的查询数据表</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.GetDataTable(System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            返回的查询数据表
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="paraArr">SQL语句中的参数集合</param>
+            <returns>返回的查询数据表</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.BeginTrans">
+            <summary>
+            开启事务
+            </summary>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.Commit">
+            <summary>
+            提交事务
+            </summary>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.Rollback">
+            <summary>
+            回滚事务
+            </summary>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.JudgeColumnExist(System.String,System.String)">
+            <summary>
+            判断指定表中是否有某一列
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="columnName">列名</param>
+            <returns>返回列是否存在</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.JudgeTableOrViewExist(System.String)">
+            <summary>
+            判断表是否存在
+            </summary>
+            <param name="tableName">表名</param>
+            <returns>返回表是否存在</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.GetSqlForPageSize(System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            获得分页的查询语句
+            </summary>
+            <param name="selectSql">查询sql如:select name,id from test where id>5</param>
+            <param name="strOrder">排序字句如:order by id desc</param>
+            <param name="PageSize">页面大小</param>
+            <param name="PageIndex">页面索引从1开始</param>
+            <returns>经过分页的sql语句</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.Dispose">
+            <summary>
+            实现释放资源的方法
+            </summary>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.ShowTables">
+            <summary>
+            获得所有表,注意返回的集合中的表模型中只有表名
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.CreateNewIDB">
+            <summary>
+            根据当前的数据库类型和连接字符串创建一个新的数据库操作对象
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.OpenTest">
+            <summary>
+            打开连接测试
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:DBUtil.OracleIDbAccess.paraPrefix">
+            <summary>
+            当前数据库使用的参数的前缀符号
+            </summary>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.CreatePara">
+            <summary>
+            创建参数
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.CreatePara(System.String,System.Object)">
+            <summary>
+            创建具有名称和值的参数
+            </summary>
+            <returns>针对当前数据库类型的参数对象</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.GetDateFilter(System.String,System.String,System.String,System.Boolean,System.Boolean)">
+            <summary>
+            根据指定日期范围生成过滤字符串
+            </summary>
+            <param name="dateColumn">要进行过滤的字段名称</param>
+            <param name="minDate">最小日期</param>
+            <param name="maxDate">最大日期</param>
+            <param name="isMinInclude">最小日期是否包含</param>
+            <param name="isMaxInclude">最大日期是否包含</param>
+            <returns>返回生成的过滤字符串</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.ExecuteSql(System.String)">
+            <summary>
+            执行sql语句
+            </summary>
+            <param name="strSql">要执行的sql语句</param>
+            <returns>受影响的行数</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.ExecuteSql(System.String[])">
+            <summary>
+            执行多个sql语句
+            </summary>
+            <param name="strSql">多个SQL语句的数组</param>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.ExecuteSql(System.String,System.Data.IDataParameter[])">
+            <summary>
+            执行带参数的sql语句
+            </summary>
+            <param name="strSql">要执行的sql语句</param>
+            <param name="paramArr">参数数组</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.ExecuteSql(System.String[],System.Data.IDataParameter[][])">
+            <summary>
+            批量执行带参数的sql语句
+            </summary>
+            <param name="strSql"></param>
+            <param name="paraArrs"></param>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.AddData(System.String,System.Collections.Hashtable)">
+            <summary>
+            向一个表中添加一行数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">列名和值得键值对</param>
+            <returns>返回是受影响的行数</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.AddData(System.String,System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            向一个表中添加一行数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">列名和值得键值对</param>
+            <returns>返回是受影响的行数</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.UpdateData(System.String,System.Collections.Hashtable,System.String)">
+            <summary>
+            根据键值表中的数据向表中更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.UpdateData(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String)">
+            <summary>
+            根据键值表中的数据向表中更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.UpdateData(System.String,System.Collections.Hashtable,System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            根据键值表中的数据向表中更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <param name="paraArr">过滤条件中的参数数组</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.UpdateData(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            根据键值表中的数据向表中更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <param name="paraArr">过滤条件中的参数数组</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.UpdateData(System.String,System.Collections.Hashtable,System.Collections.Generic.List{System.String},System.Boolean)">
+            <summary>
+            向表中更新数据并根据ht里面的键值对作为关键字更新(关键字默认不参与更新)
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="keys">关键字集合</param>
+            <param name="isKeyAttend">关键字是否参与到更新中</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.UpdateData(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Collections.Generic.List{System.String},System.Boolean)">
+            <summary>
+            向表中更新数据并根据键值表里面的键值对作为关键字更新(关键字默认不参与更新)
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="keys">关键字集合</param>
+            <param name="isKeyAttend">关键字是否参与到更新中</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.UpdateOrAdd(System.String,System.Collections.Hashtable,System.String)">
+            <summary>
+            根据键值表中的数据向表中添加或更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.UpdateOrAdd(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String)">
+            <summary>
+            根据键值表中的数据向表中添加或更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.UpdateOrAdd(System.String,System.Collections.Hashtable,System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            根据键值表中的数据向表中添加或更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <param name="paraArr">过滤条件中的参数数组</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.UpdateOrAdd(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            根据键值表中的数据向表中添加或更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <param name="paraArr">过滤条件中的参数数组</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.UpdateOrAdd(System.String,System.Collections.Hashtable,System.Collections.Generic.List{System.String},System.Boolean)">
+            <summary>
+            向表中添加或更新数据并根据ht里面的键值对作为关键字更新(关键字默认不参与更新)
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="keys">关键字集合</param>
+            <param name="isKeyAttend">关键字是否参与到更新中</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.UpdateOrAdd(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Collections.Generic.List{System.String},System.Boolean)">
+            <summary>
+            向表中添加或更新数据并根据键值对作为关键字更新(关键字默认不参与更新)
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="keys">关键字集合</param>
+            <param name="isKeyAttend">关键字是否参与到更新中</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.ContainsDBParameter(System.Collections.Generic.List{System.Data.IDbDataParameter},System.Data.IDbDataParameter)">
+            <summary>
+            判断参数集合list中是否包含同名的参数para,如果已存在返回true,否则返回false
+            </summary>
+            <param name="list">参数集合</param>
+            <param name="para">参数模型</param>
+            <returns>参数集合中是否包含参数模型</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.DeleteTableRow(System.String,System.String)">
+            <summary>
+            删除一行
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="strFilter">过滤条件以and开头</param>
+            <returns>返回受影响的行数</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.DeleteTableRow(System.String,System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            删除一行
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="strFilter">过滤条件</param>
+            <param name="paras">过滤条件中的参数集合</param>
+            <returns>返回受影响的行数</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.GetFirstColumn(System.String)">
+            <summary>
+            返回查到的第一行第一列的值
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns>返回查到的第一行第一列的值</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.GetFirstColumn(System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            返回查到的第一行第一列的值
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="paraArr">sql语句参数</param>
+            <returns>返回查到的第一行第一列的值</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.GetFirstColumnString(System.String,System.Boolean)">
+            <summary>
+            返回查到的第一行第一列的字符串值(该方法将调用GetFirstColumn,并将返回的对象转换成字符串)
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="isReturnNull">当查询结果为null是是否将null返回,为true则返回null,为false则返回"",默认为false</param>
+            <returns>返回查到的第一行第一列的值</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.GetFirstColumnString(System.String,System.Data.IDbDataParameter[],System.Boolean)">
+            <summary>
+            返回查到的第一行第一列的字符串值(该方法将调用GetFirstColumn,并将返回的对象转换成字符串)
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="paraArr">sql语句中的参数数组</param>
+            <param name="isReturnNull">false:查询结果为null就返回""否则返回null</param>
+            <returns>返回查到的第一行第一列的值</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.GetDataReader(System.String)">
+            <summary>
+            获取阅读器
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns>返回阅读器</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.GetDataReader(System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            获取阅读器
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns>返回阅读器</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.GetDataSet(System.String)">
+            <summary>
+            返回查询结果的数据集
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns>返回的查询结果集</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.GetDataSet(System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            返回查询结果的数据集
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="paraArr">SQL语句中的参数集合</param>
+            <returns>返回的查询结果集</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.GetDataTable(System.String)">
+            <summary>
+            返回查询结果的数据表
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns>返回的查询数据表</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.GetDataTable(System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            返回的查询数据表
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="paraArr">SQL语句中的参数集合</param>
+            <returns>返回的查询数据表</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.BeginTrans">
+            <summary>
+            开启事务
+            </summary>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.Commit">
+            <summary>
+            提交事务
+            </summary>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.Rollback">
+            <summary>
+            回滚事务
+            </summary>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.JudgeColumnExist(System.String,System.String)">
+            <summary>
+            判断指定表中是否有某一列
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="columnName">列名</param>
+            <returns>返回列是否存在</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.JudgeTableOrViewExist(System.String)">
+            <summary>
+            判断表是否存在
+            </summary>
+            <param name="tableName">表名</param>
+            <returns>返回表是否存在</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.GetSqlForPageSize(System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            获得分页的查询语句
+            </summary>
+            <param name="selectSql">查询sql如:select name,id from test where id>5</param>
+            <param name="strOrder">排序字句如:order by id desc</param>
+            <param name="PageSize">页面大小</param>
+            <param name="PageIndex">页面索引从1开始</param>
+            <returns>经过分页的sql语句</returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.Dispose">
+            <summary>
+            实现释放资源的方法
+            </summary>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.ShowTables">
+            <summary>
+            获得所有表,注意返回的集合中的表模型中只有表名
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.OracleIDbAccess.CreateNewIDB">
+            <summary>
+            根据当前的数据库类型和连接字符串创建一个新的数据库操作对象
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.OpenTest">
+            <summary>
+            打开连接测试
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:DBUtil.PostgreSqlIDbAccess.paraPrefix">
+            <summary>
+            当前数据库使用的参数的前缀符号
+            </summary>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.CreatePara">
+            <summary>
+            创建参数
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.CreatePara(System.String,System.Object)">
+            <summary>
+            创建具有名称和值的参数
+            </summary>
+            <returns>针对当前数据库类型的参数对象</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.GetDateFilter(System.String,System.String,System.String,System.Boolean,System.Boolean)">
+            <summary>
+            根据指定日期范围生成过滤字符串
+            </summary>
+            <param name="dateColumn">要进行过滤的字段名称</param>
+            <param name="minDate">最小日期</param>
+            <param name="maxDate">最大日期</param>
+            <param name="isMinInclude">最小日期是否包含</param>
+            <param name="isMaxInclude">最大日期是否包含</param>
+            <returns>返回生成的过滤字符串</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.ExecuteSql(System.String)">
+            <summary>
+            执行sql语句
+            </summary>
+            <param name="strSql">要执行的sql语句</param>
+            <returns>受影响的行数</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.ExecuteSql(System.String[])">
+            <summary>
+            执行多个sql语句
+            </summary>
+            <param name="strSql">多个SQL语句的数组</param>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.ExecuteSql(System.String,System.Data.IDataParameter[])">
+            <summary>
+            执行带参数的sql语句
+            </summary>
+            <param name="strSql">要执行的sql语句</param>
+            <param name="paramArr">参数数组</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.ExecuteSql(System.String[],System.Data.IDataParameter[][])">
+            <summary>
+            批量执行带参数的sql语句
+            </summary>
+            <param name="strSql"></param>
+            <param name="paraArrs"></param>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.AddData(System.String,System.Collections.Hashtable)">
+            <summary>
+            向一个表中添加一行数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">列名和值得键值对</param>
+            <returns>返回是受影响的行数</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.AddData(System.String,System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            向一个表中添加一行数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">列名和值得键值对</param>
+            <returns>返回是受影响的行数</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.UpdateData(System.String,System.Collections.Hashtable,System.String)">
+            <summary>
+            根据键值表中的数据向表中更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.UpdateData(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String)">
+            <summary>
+            根据键值表中的数据向表中更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.UpdateData(System.String,System.Collections.Hashtable,System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            根据键值表中的数据向表中更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <param name="paraArr">过滤条件中的参数数组</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.UpdateData(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            根据键值表中的数据向表中更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <param name="paraArr">过滤条件中的参数数组</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.UpdateData(System.String,System.Collections.Hashtable,System.Collections.Generic.List{System.String},System.Boolean)">
+            <summary>
+            向表中更新或添加数据并根据键值对作为关键字更新(关键字默认不参与更新)
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="keys">关键字集合</param>
+            <param name="isKeyAttend">关键字是否参与到更新中</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.UpdateData(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Collections.Generic.List{System.String},System.Boolean)">
+            <summary>
+            向表中更新数据并根据键值表里面的键值对作为关键字更新(关键字默认不参与更新)
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="keys">关键字集合</param>
+            <param name="isKeyAttend">关键字是否参与到更新中</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.UpdateOrAdd(System.String,System.Collections.Hashtable,System.String)">
+            <summary>
+            根据键值表中的数据向表中添加或更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.UpdateOrAdd(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String)">
+            <summary>
+            根据键值表中的数据向表中添加或更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.UpdateOrAdd(System.String,System.Collections.Hashtable,System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            根据键值表ht中的数据向表中添加或更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <param name="paraArr">过滤条件中的参数数组</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.UpdateOrAdd(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            根据键值表中的数据向表中添加或更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <param name="paraArr">过滤条件中的参数数组</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.UpdateOrAdd(System.String,System.Collections.Hashtable,System.Collections.Generic.List{System.String},System.Boolean)">
+            <summary>
+            向表中添加或更新数据并根据ht里面的键值对作为关键字更新(关键字默认不参与更新)
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="keys">关键字集合</param>
+            <param name="isKeyAttend">关键字是否参与到更新中</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.UpdateOrAdd(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Collections.Generic.List{System.String},System.Boolean)">
+            <summary>
+            向表中添加或更新数据并根据键值对作为关键字更新(关键字默认不参与更新)
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="keys">关键字集合</param>
+            <param name="isKeyAttend">关键字是否参与到更新中</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.ContainsDBParameter(System.Collections.Generic.List{System.Data.IDbDataParameter},System.Data.IDbDataParameter)">
+            <summary>
+            判断参数集合list中是否包含同名的参数para,如果已存在返回true,否则返回false
+            </summary>
+            <param name="list">参数集合</param>
+            <param name="para">参数模型</param>
+            <returns>参数集合中是否包含参数模型</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.DeleteTableRow(System.String,System.String)">
+            <summary>
+            删除一行
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="strFilter">过滤条件以and开头</param>
+            <returns>返回受影响的行数</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.DeleteTableRow(System.String,System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            删除一行
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="strFilter">过滤条件</param>
+            <param name="paras">过滤条件中的参数集合</param>
+            <returns>返回受影响的行数</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.GetFirstColumn(System.String)">
+            <summary>
+            返回查到的第一行第一列的值
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns>返回查到的第一行第一列的值</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.GetFirstColumn(System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            返回查到的第一行第一列的值
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="paraArr">sql语句参数</param>
+            <returns>返回查到的第一行第一列的值</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.GetFirstColumnString(System.String,System.Boolean)">
+            <summary>
+            返回查到的第一行第一列的字符串值(调用GetFirstColumn,将返回的对象转换成字符串,如果为null就转化为"")
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="isReturnNull">当查询结果为null是是否将null返回,为true则返回null,为false则返回"",默认为false</param>
+            <returns>返回查到的第一行第一列的值</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.GetFirstColumnString(System.String,System.Data.IDbDataParameter[],System.Boolean)">
+            <summary>
+            返回查到的第一行第一列的字符串值
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="paraArr">sql语句中的参数数组</param>
+            <param name="isReturnNull">false:查询结果为null就返回""否则返回null</param>
+            <returns>返回查到的第一行第一列的值</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.GetDataReader(System.String)">
+            <summary>
+            获取阅读器
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns>返回阅读器</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.GetDataReader(System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            获取阅读器
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns>返回阅读器</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.GetDataSet(System.String)">
+            <summary>
+            返回查询结果的数据集
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns>返回的查询结果集</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.GetDataSet(System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            返回查询结果的数据集
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="paraArr">SQL语句中的参数集合</param>
+            <returns>返回的查询结果集</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.GetDataTable(System.String)">
+            <summary>
+            返回查询结果的数据表
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns>返回的查询数据表</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.GetDataTable(System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            返回的查询数据表
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="paraArr">SQL语句中的参数集合</param>
+            <returns>返回的查询数据表</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.BeginTrans">
+            <summary>
+            开启事务
+            </summary>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.Commit">
+            <summary>
+            提交事务
+            </summary>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.Rollback">
+            <summary>
+            回滚事务
+            </summary>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.JudgeColumnExist(System.String,System.String)">
+            <summary>
+            判断指定表中是否有某一列
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="columnName">列名</param>
+            <returns>返回列是否存在</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.JudgeTableOrViewExist(System.String)">
+            <summary>
+            判断表是否存在
+            </summary>
+            <param name="tableName">表名</param>
+            <returns>返回表是否存在</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.GetSqlForPageSize(System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            获得分页的查询语句
+            </summary>
+            <param name="selectSql">查询sql如:select name,id from test where id>5</param>
+            <param name="strOrder">排序字句如:order by id desc</param>
+            <param name="PageSize">页面大小</param>
+            <param name="PageIndex">页面索引从1开始</param>
+            <returns>经过分页的sql语句</returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.Dispose">
+            <summary>
+            实现释放资源的方法
+            </summary>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.ShowTables">
+            <summary>
+            获得所有表,注意返回的集合中的表模型中只有表名
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.GetTableStruct(System.String)">
+            <summary>
+            获得指定表的表结构说明
+            </summary>
+            <param name="tableName">表名</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.GetFuncs">
+            <summary>
+            获取当前数据库的用户自定义函数
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.GetProcs">
+            <summary>
+            获取当前数据库的用户自定义存储过程
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.GetTableStructs(System.Collections.Generic.List{System.String})">
+            <summary>
+            批量获得指定表的表结构说明
+            </summary>
+            <param name="tableNames">表名集合</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.RenameTable(System.String,System.String)">
+            <summary>
+            重命名指定表
+            </summary>
+            <param name="oldTableName">旧表名</param>
+            <param name="newTableName">新表名</param>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.DropTable(System.String)">
+            <summary>
+            删除指定表
+            </summary>
+            <param name="tableName">要删除的表</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.SaveTableDesc(System.String,System.String)">
+            <summary>
+            保存表说明,如果不存在旧的说明信息就创建否则就覆盖
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="desc">说明信息</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.RenameColumn(System.String,System.String,System.String)">
+            <summary>
+            重命名列名
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="oldColumnName">旧的列名</param>
+            <param name="newColumnName">新的列名</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.DropColumn(System.String,System.String)">
+            <summary>
+            删除指定表的指定列
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="columnName">要删除的列名</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.SaveColumnDesc(System.String,System.String,System.String)">
+            <summary>
+            保存指定表的指定列的说明信息
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="columnName">列名</param>
+            <param name="desc">说明信息</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.AlterColumnType(System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            改变指定表的指定列类型
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="columnName">列名</param>
+            <param name="columnType">列类型</param>
+            <param name="isForce">是否暴力修改列类型,暴力修改:在正常修改不成功的情况下会删掉这个列并重建这个列,数据将会丢失</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.AlterColumnNullAble(System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            修改指定表的指定列是否可以为空
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="columnName">列名</param>
+            <param name="columnType">列类型</param>
+            <param name="canNull">是否可空</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.AddIdentityColumn(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            给指定表增加自增列
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="columnName">列名</param>
+            <param name="columnType">列类型</param>
+            <param name="start">种子</param>
+            <param name="end">增量</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.SaveColumnDefault(System.String,System.String,System.String)">
+            <summary>
+            给指定列修改默认值
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="columnName">列名</param>
+            <param name="def">默认值</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.DropColumnDefault(System.String,System.String)">
+            <summary>
+            删除指定表指定列的默认值
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="columnName">列名</param>
+            <param name="def">默认值</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.CreateTable(DBUtil.TableStruct)">
+            <summary>
+            创建新表
+            </summary>
+            <param name="tableStruct">表结构说明</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.AddColumn(System.String,DBUtil.TableStruct.Column)">
+            <summary>
+            给指定表添加一列
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="column">列名</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.SaveColumnUnique(System.String,System.String,System.Boolean)">
+            <summary>
+            设置指定列是否是唯一的
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="columnName">列名</param>
+            <param name="canUnique">是否是唯一的</param>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.PreExportDataProc">
+            <summary>
+            准备数据导出的存储过程,这将重建usp_CreateInsertScript
+            </summary>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.CreateTableSql(DBUtil.TableStruct)">
+            <summary>
+            根据表结构对象生成建表语句
+            </summary>
+            <param name="tableStruct"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.CreateViewSql(System.String)">
+            <summary>
+            根据视图名称生成视图建立语句
+            </summary>
+            <param name="viewName">视图名称</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.CreateProcSql(System.String)">
+            <summary>
+            根据存储过程名字生成存储过程的创建语句
+            </summary>
+            <param name="procName">存储过程名字</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.CreateFuncSql(System.String)">
+            <summary>
+            根据函数名生成函数的创建语句
+            </summary>
+            <param name="funcName">函数名称</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.GeneInsertSql(System.String,System.Int32@,System.String)">
+            <summary>
+            根据表名称和过滤条件生成表数据的insert语句
+            </summary>
+            <param name="tblName">表结构</param>
+            <param name="Count">生成的insert语句的个数</param>
+            <param name="filter">过滤条件</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.WrapName(System.String)">
+            <summary>
+            包装对象名称,如果非全部小写,自动添加双引号
+            </summary>
+            <param name="tableName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.CreateNewIDB">
+            <summary>
+            根据当前的数据库类型和连接字符串创建一个新的数据库操作对象
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:DBUtil.SerialChunk">
+            <summary>
+            字段的编号格式控制块
+            <para>一个表的一个字段可以有多个编号格式,它们之间互不影响</para>
+            <para>在程序中会对"指定的表+指定的字段+指定的编号格式"加锁用来并发控制</para>
+            <para>如何指定字段的编号格式是否是同一个: List集合中所有SerialChunk的name相加值是否相等</para>
+            <para>SerialChunk有两个重要的属性:name,formatStr,name表示名称可以用来唯一性判别,formatStr控制实际的编号格式,参照<see cref="P:DBUtil.SerialChunk.FormatStr"/></para>
+            <para>示例：根据前缀FLOWNO+日期+6位序列码生成编号的格式控制如下(编号如"FLOWNO20160203000001"):
+            new List&lt;SerialChunk&gt;() { new SerialChunk("FLOWNO", "Text[FLOWNO][6]"),new SerialChunk("DateTime", "DateTime[yyyyMMdd][8][incycle]"),new SerialChunk("SerialNo", "SerialNo[1,1,6,,day]") };</para>
+            </summary>
+        </member>
+        <member name="M:DBUtil.SerialChunk.#ctor(System.String,System.String)">
+            <summary>
+            序列块的唯一构造函数
+            </summary>
+            <param name="name">序列块的名称,程序锁的组成部分(表名+列名+所有的序列块名)</param>
+            <param name="formatStr">格式参见SerialChunk的属性FormatStr</param>
+        </member>
+        <member name="P:DBUtil.SerialChunk.Name">
+            <summary>
+            每个chunk都要有一个名字,这个名字作为编号生成锁的一部分
+            <para>io</para>
+            </summary>
+        </member>
+        <member name="P:DBUtil.SerialChunk.FormatStr">
+            <summary>
+            序列号块的格式控制(不允许出现多余的空格等字符,严格按格式填写,注意大小写),有三种格式:
+            格式1: SerialNo[start,incr,len,end,cyclemodel][varlen]
+            格式2: Text[TextVal][len]
+            格式3: DateTime[dateformate][len][incycle]
+                <para>格式1: SerialNo[start,incr,len,end,cyclemodel][varlen]</para>
+                <para>  SerialNo:表示这是一个序列码</para>
+                <para>  start:序列码起始值(可选,默认为1)</para>
+                <para>  incr:序列码递增值(可选,默认为1)</para>
+                <para>  len:序列码占位长度(必须有)</para>
+                <para>  end:序列码结束值(可选,默认为无限大)</para>
+                <para>  cyclemodel:序列码循环模式:day-每天循环,month-每月循环,year-每年循环,hour-每小时循环,minute-每分钟循环,none-不循环(可选,默认为day)</para>
+                <para>  varlen:表示长度是变长的,该属性只在最后一个trunck中有效并自动忽略掉len属性</para>
+                <para>格式2: Text[TextVal][len]</para>
+                <para>   Text:表示这是一个文本</para>
+                <para>   TextVal:文本的具体值(必须)</para>
+                <para>   len:文本的长度(必须)</para>
+                <para>格式3: DateTime[dateformate][len][incycle]</para>
+                <para>   DateTime:表示这是一个日期输出项(必须)</para>
+                <para>   dateformate:日期的输出格式,使用形式:DateTime.Now.ToString(dateformate),例如:yyyyMMdd</para>
+                <para>   len:输出日期的占位长度(必须)</para>
+                <para>   incycle:是否在循环中(incyle表示在循环中,不填或填写其他的都是不在循环中)</para>
+                <para> 示例1."SerialNo[1,1,5,,day]":表示序列码从1开始每次增长1直至无限大,占5个字符位(不够长度的左侧补0,超过长度抛异常),每天重置</para>
+                <para> 示例2."Text[GWFW][4]":表示文本块本次使用的值是GWFW,占用了4个字符位</para>
+                <para> 示例3.DateTime[yyyyMMdd][8][incycle]:表示日期输出,格式化字符串为"yyyyMMdd",占位8个字符,在序列码的循环中</para>
+                <para> 示例4.DateTime[yyyyMMdd][8]:表示日期输出,格式化字符串为"yyyyMMdd",占位8个字符,不属于循环</para>
+            </summary>
+        </member>
+        <member name="M:DBUtil.SimpleIDSNOManager.NewID(DBUtil.IDbAccess,System.String,System.String)">
+            <summary>
+            根据表名和列名生成ID,第一次生成后就不需要再访问数据库,频率高时使用
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="colName">列名</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SimpleIDSNOManager.NewIDForce(DBUtil.IDbAccess,System.String,System.String)">
+            <summary>
+            使用程序锁直接从表的字段里面算得递增值,频率低时使用
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="colName">列名</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SimpleIDSNOManager.ResetID(System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            重置一个表的ID
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="colName">列名</param>
+            <param name="val">为null时直接删除这个表和这个列的ID生成控制</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SimpleIDSNOManager.ShowCurrentIDs(System.String,System.String)">
+            <summary>
+            显示当前环境下的当前ID
+            </summary>
+            <param name="tableName">如果指定了tableName就只显示这个表的ID控制情况</param>
+            <param name="colName">如果指定了colName就显示这个表的这个字段的ID控制情况</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SimpleIDSNOManager.AddID(System.String,System.String,System.Int32)">
+            <summary>
+            添加一个ID控制项,并指定初始值(默认为0,即下一个生成使用的为1)(慎用,必须填写正确的表名和字段名,否则无法在故障修复后恢复ID控制)</summary>
+            <param name="tableName">表名</param>
+            <param name="colName">列名</param>
+            <param name="val">初始化值,默认0</param>
+        </member>
+        <member name="M:DBUtil.SimpleIDSNOManager.ValiAndPreDealPara(System.String,System.String,System.Collections.Generic.List{DBUtil.SerialChunk})">
+            <summary>
+            验证和预处理参数
+            </summary>
+        </member>
+        <member name="M:DBUtil.SimpleIDSNOManager.ResetSNO(System.String,System.String,System.Collections.Generic.List{DBUtil.SerialChunk},System.String)">
+            <summary>
+            重置一个序列号控制项的当前编号
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="colName">列名</param>
+            <param name="trunks">chunk集合(这里的每个chunk只要求Name属性不为空即可)</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SimpleIDSNOManager.ShowCurrentSNOs(System.String,System.String,System.Collections.Generic.List{DBUtil.SerialChunk})">
+            <summary>
+            显示当前环境下的当前序列号情况
+            </summary>
+            <param name="tableName">如果指定了tableName就只显示这个表的序列号控制情况</param>
+            <param name="colName">如果指定了colName就显示这个表的这个字段的序列号控制情况</param>
+            <param name="trunks">如果指定了trunks就显示当前格式控制下的序列号情况(每个trunk只要求Name属性)</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.OpenTest">
+            <summary>
+            打开连接测试
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:DBUtil.SQLiteIDbAccess.paraPrefix">
+            <summary>
+            当前数据库使用的参数的前缀符号
+            </summary>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.CreatePara">
+            <summary>
+            创建参数
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.CreatePara(System.String,System.Object)">
+            <summary>
+            创建具有名称和值的参数
+            </summary>
+            <returns>针对当前数据库类型的参数对象</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.GetDateFilter(System.String,System.String,System.String,System.Boolean,System.Boolean)">
+            <summary>
+            根据指定日期范围生成过滤字符串
+            </summary>
+            <param name="dateColumn">要进行过滤的字段名称</param>
+            <param name="minDate">最小日期</param>
+            <param name="maxDate">最大日期</param>
+            <param name="isMinInclude">最小日期是否包含</param>
+            <param name="isMaxInclude">最大日期是否包含</param>
+            <returns>返回生成的过滤字符串</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.ExecuteSql(System.String)">
+            <summary>
+            执行sql语句
+            </summary>
+            <param name="strSql">要执行的sql语句</param>
+            <returns>受影响的行数</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.ExecuteSql(System.String[])">
+            <summary>
+            执行多个sql语句
+            </summary>
+            <param name="strSql">多个SQL语句的数组</param>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.ExecuteSql(System.String,System.Data.IDataParameter[])">
+            <summary>
+            执行带参数的sql语句
+            </summary>
+            <param name="strSql">要执行的sql语句</param>
+            <param name="paramArr">参数数组</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.ExecuteSql(System.String[],System.Data.IDataParameter[][])">
+            <summary>
+            批量执行带参数的sql语句
+            </summary>
+            <param name="strSql"></param>
+            <param name="paraArrs"></param>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.AddData(System.String,System.Collections.Hashtable)">
+            <summary>
+            向一个表中添加一行数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">列名和值得键值对</param>
+            <returns>返回是受影响的行数</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.AddData(System.String,System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            向一个表中添加一行数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">列名和值得键值对</param>
+            <returns>返回是受影响的行数</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.UpdateData(System.String,System.Collections.Hashtable,System.String)">
+            <summary>
+            根据键值表中的数据向表中更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.UpdateData(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String)">
+            <summary>
+            根据键值表中的数据向表中更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.UpdateData(System.String,System.Collections.Hashtable,System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            根据键值表中的数据向表中更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <param name="paraArr">过滤条件中的参数数组</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.UpdateData(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            根据键值表中的数据向表中更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <param name="paraArr">过滤条件中的参数数组</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.UpdateData(System.String,System.Collections.Hashtable,System.Collections.Generic.List{System.String},System.Boolean)">
+            <summary>
+            向表中更新数据并根据键值对作为关键字更新(关键字默认不参与更新)
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="keys">关键字集合</param>
+            <param name="isKeyAttend">关键字是否参与到更新中</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.UpdateData(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Collections.Generic.List{System.String},System.Boolean)">
+            <summary>
+            向表中更新数据并根据键值表里面的键值对作为关键字更新(关键字默认不参与更新)
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="keys">关键字集合</param>
+            <param name="isKeyAttend">关键字是否参与到更新中</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.UpdateOrAdd(System.String,System.Collections.Hashtable,System.String)">
+            <summary>
+            根据键值表中的数据向表中添加或更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.UpdateOrAdd(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String)">
+            <summary>
+            根据键值表中的数据向表中添加或更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.UpdateOrAdd(System.String,System.Collections.Hashtable,System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            根据键值表中的数据向表中添加或更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <param name="paraArr">过滤条件中的参数数组</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.UpdateOrAdd(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            根据键值表中的数据向表中添加或更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <param name="paraArr">过滤条件中的参数数组</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.UpdateOrAdd(System.String,System.Collections.Hashtable,System.Collections.Generic.List{System.String},System.Boolean)">
+            <summary>
+            向表中添加或更新数据并根据键值对作为关键字更新(关键字默认不参与更新)
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="keys">关键字集合</param>
+            <param name="isKeyAttend">关键字是否参与到更新中</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.UpdateOrAdd(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Collections.Generic.List{System.String},System.Boolean)">
+            <summary>
+            向表中添加或更新数据并根据键值对作为关键字更新(关键字默认不参与更新)
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="keys">关键字集合</param>
+            <param name="isKeyAttend">关键字是否参与到更新中</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.ContainsDBParameter(System.Collections.Generic.List{System.Data.IDbDataParameter},System.Data.IDbDataParameter)">
+            <summary>
+            判断参数集合list中是否包含同名的参数para,如果已存在返回true,否则返回false
+            </summary>
+            <param name="list">参数集合</param>
+            <param name="para">参数模型</param>
+            <returns>参数集合中是否包含参数模型</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.DeleteTableRow(System.String,System.String)">
+            <summary>
+            删除一行
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="strFilter">过滤条件以and开头</param>
+            <returns>返回受影响的行数</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.DeleteTableRow(System.String,System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            删除一行
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="strFilter">过滤条件</param>
+            <param name="paras">过滤条件中的参数集合</param>
+            <returns>返回受影响的行数</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.GetFirstColumn(System.String)">
+            <summary>
+            返回查到的第一行第一列的值
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns>返回查到的第一行第一列的值</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.GetFirstColumn(System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            返回查到的第一行第一列的值
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="paraArr">sql语句参数</param>
+            <returns>返回查到的第一行第一列的值</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.GetFirstColumnString(System.String,System.Boolean)">
+            <summary>
+            返回查到的第一行第一列的字符串值(调用GetFirstColumn,将返回的对象转换成字符串,如果为null就转化为"")
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="isReturnNull">当查询结果为null是是否将null返回,为true则返回null,为false则返回"",默认为false</param>
+            <returns>返回查到的第一行第一列的值</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.GetFirstColumnString(System.String,System.Data.IDbDataParameter[],System.Boolean)">
+            <summary>
+            返回查到的第一行第一列的字符串值
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="paraArr">sql语句中的参数数组</param>
+            <param name="isReturnNull">false:查询结果为null就返回""否则返回null</param>
+            <returns>返回查到的第一行第一列的值</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.GetDataReader(System.String)">
+            <summary>
+            获取阅读器
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns>返回阅读器</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.GetDataReader(System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            获取阅读器
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns>返回阅读器</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.GetDataSet(System.String)">
+            <summary>
+            返回查询结果的数据集
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns>返回的查询结果集</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.GetDataSet(System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            返回查询结果的数据集
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="paraArr">SQL语句中的参数集合</param>
+            <returns>返回的查询结果集</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.GetDataTable(System.String)">
+            <summary>
+            返回查询结果的数据表
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns>返回的查询数据表</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.GetDataTable(System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            返回的查询数据表
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="paraArr">SQL语句中的参数集合</param>
+            <returns>返回的查询数据表</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.BeginTrans">
+            <summary>
+            开启事务
+            </summary>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.Commit">
+            <summary>
+            提交事务
+            </summary>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.Rollback">
+            <summary>
+            回滚事务
+            </summary>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.JudgeColumnExist(System.String,System.String)">
+            <summary>
+            判断指定表中是否有某一列
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="columnName">列名</param>
+            <returns>返回列是否存在</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.JudgeTableOrViewExist(System.String)">
+            <summary>
+            判断表是否存在
+            </summary>
+            <param name="tableName">表名</param>
+            <returns>返回表是否存在</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.GetSqlForPageSize(System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            获得分页的查询语句
+            </summary>
+            <param name="selectSql">查询sql如:select name,id from test where id>5</param>
+            <param name="strOrder">排序字句如:order by id desc</param>
+            <param name="PageSize">页面大小</param>
+            <param name="PageIndex">页面索引从1开始</param>
+            <returns>经过分页的sql语句</returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.Dispose">
+            <summary>
+            实现释放资源的方法
+            </summary>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.ShowTables">
+            <summary>
+            获得所有表,注意返回的集合中的表模型中只有表名
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.CreateNewIDB">
+            <summary>
+            根据当前的数据库类型和连接字符串创建一个新的数据库操作对象
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.OpenTest">
+            <summary>
+            打开连接测试
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:DBUtil.SqlServerIDbAccess.paraPrefix">
+            <summary>
+            当前数据库使用的参数的前缀符号
+            </summary>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.CreatePara">
+            <summary>
+            创建参数
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.CreatePara(System.String,System.Object)">
+            <summary>
+            创建具有名称和值的参数
+            </summary>
+            <returns>针对当前数据库类型的参数对象</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.GetDateFilter(System.String,System.String,System.String,System.Boolean,System.Boolean)">
+            <summary>
+            根据指定日期范围生成过滤字符串
+            </summary>
+            <param name="dateColumn">要进行过滤的字段名称</param>
+            <param name="minDate">最小日期</param>
+            <param name="maxDate">最大日期</param>
+            <param name="isMinInclude">最小日期是否包含</param>
+            <param name="isMaxInclude">最大日期是否包含</param>
+            <returns>返回生成的过滤字符串</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.ExecuteSql(System.String)">
+            <summary>
+            执行sql语句
+            </summary>
+            <param name="strSql">要执行的sql语句</param>
+            <returns>受影响的行数</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.ExecuteSql(System.String[])">
+            <summary>
+            执行多个sql语句
+            </summary>
+            <param name="strSql">多个SQL语句的数组</param>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.ExecuteSql(System.String,System.Data.IDataParameter[])">
+            <summary>
+            执行带参数的sql语句
+            </summary>
+            <param name="strSql">要执行的sql语句</param>
+            <param name="paramArr">参数数组</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.ExecuteSql(System.String[],System.Data.IDataParameter[][])">
+            <summary>
+            批量执行带参数的sql语句
+            </summary>
+            <param name="strSql"></param>
+            <param name="paraArrs"></param>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.AddData(System.String,System.Collections.Hashtable)">
+            <summary>
+            向一个表中添加一行数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">列名和值得键值对</param>
+            <returns>返回是受影响的行数</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.AddData(System.String,System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            向一个表中添加一行数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">列名和值得键值对</param>
+            <returns>返回是受影响的行数</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.UpdateData(System.String,System.Collections.Hashtable,System.String)">
+            <summary>
+            根据键值表中的数据向表中更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.UpdateData(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String)">
+            <summary>
+            根据键值表中的数据向表中更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.UpdateData(System.String,System.Collections.Hashtable,System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            根据键值表中的数据向表中更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <param name="paraArr">过滤条件中的参数数组</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.UpdateData(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            根据键值表中的数据向表中更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <param name="paraArr">过滤条件中的参数数组</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.UpdateData(System.String,System.Collections.Hashtable,System.Collections.Generic.List{System.String},System.Boolean)">
+            <summary>
+            向表中更新或添加数据并根据键值对作为关键字更新(关键字默认不参与更新)
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="keys">关键字集合</param>
+            <param name="isKeyAttend">关键字是否参与到更新中</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.UpdateData(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Collections.Generic.List{System.String},System.Boolean)">
+            <summary>
+            向表中更新数据并根据键值表里面的键值对作为关键字更新(关键字默认不参与更新)
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="keys">关键字集合</param>
+            <param name="isKeyAttend">关键字是否参与到更新中</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.UpdateOrAdd(System.String,System.Collections.Hashtable,System.String)">
+            <summary>
+            根据键值表中的数据向表中添加或更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.UpdateOrAdd(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String)">
+            <summary>
+            根据键值表中的数据向表中添加或更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.UpdateOrAdd(System.String,System.Collections.Hashtable,System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            根据键值表中的数据向表中添加或更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <param name="paraArr">过滤条件中的参数数组</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.UpdateOrAdd(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            根据键值表中的数据向表中添加或更新数据
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="filterStr">过滤条件以and开头</param>
+            <param name="paraArr">过滤条件中的参数数组</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.UpdateOrAdd(System.String,System.Collections.Hashtable,System.Collections.Generic.List{System.String},System.Boolean)">
+            <summary>
+            向表中添加或更新数据并根据键值对作为关键字更新(关键字默认不参与更新)
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="ht">键值表</param>
+            <param name="keys">关键字集合</param>
+            <param name="isKeyAttend">关键字是否参与到更新中</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.UpdateOrAdd(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Collections.Generic.List{System.String},System.Boolean)">
+            <summary>
+            向表中添加或更新数据并根据键值对作为关键字更新(关键字默认不参与更新)
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="dic">键值表</param>
+            <param name="keys">关键字集合</param>
+            <param name="isKeyAttend">关键字是否参与到更新中</param>
+            <returns>是否更新成功</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.ContainsDBParameter(System.Collections.Generic.List{System.Data.IDbDataParameter},System.Data.IDbDataParameter)">
+            <summary>
+            判断参数集合list中是否包含同名的参数para,如果已存在返回true,否则返回false
+            </summary>
+            <param name="list">参数集合</param>
+            <param name="para">参数模型</param>
+            <returns>参数集合中是否包含参数模型</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.DeleteTableRow(System.String,System.String)">
+            <summary>
+            删除一行
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="strFilter">过滤条件以and开头</param>
+            <returns>返回受影响的行数</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.DeleteTableRow(System.String,System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            删除一行
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="strFilter">过滤条件</param>
+            <param name="paras">过滤条件中的参数集合</param>
+            <returns>返回受影响的行数</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.GetFirstColumn(System.String)">
+            <summary>
+            返回查到的第一行第一列的值
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns>返回查到的第一行第一列的值</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.GetFirstColumn(System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            返回查到的第一行第一列的值
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="paraArr">sql语句参数</param>
+            <returns>返回查到的第一行第一列的值</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.GetFirstColumnString(System.String,System.Boolean)">
+            <summary>
+            返回查到的第一行第一列的字符串值(调用GetFirstColumn,将返回的对象转换成字符串,如果为null就转化为"")
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="isReturnNull">当查询结果为null是是否将null返回,为true则返回null,为false则返回"",默认为false</param>
+            <returns>返回查到的第一行第一列的值</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.GetFirstColumnString(System.String,System.Data.IDbDataParameter[],System.Boolean)">
+            <summary>
+            返回查到的第一行第一列的字符串值
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="paraArr">sql语句中的参数数组</param>
+            <param name="isReturnNull">false:查询结果为null就返回""否则返回null</param>
+            <returns>返回查到的第一行第一列的值</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.GetDataReader(System.String)">
+            <summary>
+            获取阅读器
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns>返回阅读器</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.GetDataReader(System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            获取阅读器
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns>返回阅读器</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.GetDataSet(System.String)">
+            <summary>
+            返回查询结果的数据集
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns>返回的查询结果集</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.GetDataSet(System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            返回查询结果的数据集
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="paraArr">SQL语句中的参数集合</param>
+            <returns>返回的查询结果集</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.GetDataTable(System.String)">
+            <summary>
+            返回查询结果的数据表
+            </summary>
+            <param name="strSql">sql语句</param>
+            <returns>返回的查询数据表</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.GetDataTable(System.String,System.Data.IDbDataParameter[])">
+            <summary>
+            返回的查询数据表
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="paraArr">SQL语句中的参数集合</param>
+            <returns>返回的查询数据表</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.BeginTrans">
+            <summary>
+            开启事务
+            </summary>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.Commit">
+            <summary>
+            提交事务
+            </summary>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.Rollback">
+            <summary>
+            回滚事务
+            </summary>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.JudgeColumnExist(System.String,System.String)">
+            <summary>
+            判断指定表中是否有某一列
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="columnName">列名</param>
+            <returns>返回列是否存在</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.JudgeTableOrViewExist(System.String)">
+            <summary>
+            判断表是否存在
+            </summary>
+            <param name="tableName">表名</param>
+            <returns>返回表是否存在</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.GetSqlForPageSize(System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            获得分页的查询语句
+            </summary>
+            <param name="selectSql">查询sql如:select name,id from test where id>5</param>
+            <param name="strOrder">排序字句如:order by id desc</param>
+            <param name="PageSize">页面大小</param>
+            <param name="PageIndex">页面索引从1开始</param>
+            <returns>经过分页的sql语句</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.Dispose">
+            <summary>
+            实现释放资源的方法
+            </summary>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.ShowTables">
+            <summary>
+            获得所有表,注意返回的集合中的表模型中只有表名
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.GetTableStruct(System.String)">
+            <summary>
+            获得指定表的表结构说明
+            </summary>
+            <param name="tableName">表名</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.GetFuncs">
+            <summary>
+            获取当前数据库的用户自定义函数
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.GetProcs">
+            <summary>
+            获取当前数据库的用户自定义存储过程
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.GetTableStructs(System.Collections.Generic.List{System.String})">
+            <summary>
+            批量获得指定表的表结构说明
+            </summary>
+            <param name="tableNames">表名集合</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.RenameTable(System.String,System.String)">
+            <summary>
+            重命名指定表
+            </summary>
+            <param name="oldTableName">旧表名</param>
+            <param name="newTableName">新表名</param>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.DropTable(System.String)">
+            <summary>
+            删除指定表
+            </summary>
+            <param name="tableName">要删除的表</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.SaveTableDesc(System.String,System.String)">
+            <summary>
+            保存表说明,如果不存在旧的说明信息就创建否则就覆盖
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="desc">说明信息</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.RenameColumn(System.String,System.String,System.String)">
+            <summary>
+            重命名列名
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="oldColumnName">旧的列名</param>
+            <param name="newColumnName">新的列名</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.DropColumn(System.String,System.String)">
+            <summary>
+            删除指定表的指定列
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="columnName">要删除的列名</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.SaveColumnDesc(System.String,System.String,System.String)">
+            <summary>
+            保存指定表的指定列的说明信息
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="columnName">列名</param>
+            <param name="desc">说明信息</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.AlterColumnType(System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            改变指定表的指定列类型
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="columnName">列名</param>
+            <param name="columnType">列类型</param>
+            <param name="isForce">是否暴力修改列类型,暴力修改:在正常修改不成功的情况下会删掉这个列并重建这个列,数据将会丢失</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.AlterColumnNullAble(System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            修改指定表的指定列是否可以为空
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="columnName">列名</param>
+            <param name="columnType">列类型</param>
+            <param name="canNull">是否可空</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.AddIdentityColumn(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            给指定表增加自增列
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="columnName">列名</param>
+            <param name="columnType">列类型</param>
+            <param name="start">种子</param>
+            <param name="end">增量</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.SaveColumnDefault(System.String,System.String,System.String)">
+            <summary>
+            给指定列修改默认值
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="columnName">列名</param>
+            <param name="def">默认值</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.DropColumnDefault(System.String,System.String)">
+            <summary>
+            删除指定表指定列的默认值
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="columnName">列名</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.CreateTable(DBUtil.TableStruct)">
+            <summary>
+            创建新表
+            </summary>
+            <param name="tableStruct">表结构说明</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.AddColumn(System.String,DBUtil.TableStruct.Column)">
+            <summary>
+            给指定表添加一列
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="column">列名</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.SaveColumnUnique(System.String,System.String,System.Boolean)">
+            <summary>
+            设置指定列是否是唯一的
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="columnName">列名</param>
+            <param name="canUnique">是否是唯一的</param>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.PreExportDataProc">
+            <summary>
+            准备数据导出的存储过程,这将重建usp_CreateInsertScript
+            </summary>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.CreateTableSql(DBUtil.TableStruct)">
+            <summary>
+            根据表结构对象生成建表语句
+            </summary>
+            <param name="tableStruct"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.CreateViewSql(System.String)">
+            <summary>
+            根据视图名称生成视图建立语句
+            </summary>
+            <param name="viewName">视图名称</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.CreateProcSql(System.String)">
+            <summary>
+            根据存储过程名字生成存储过程的创建语句
+            </summary>
+            <param name="procName">存储过程名字</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.CreateFuncSql(System.String)">
+            <summary>
+            根据函数名生成函数的创建语句
+            </summary>
+            <param name="funcName">函数名称</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.GeneInsertSql(System.String,System.Int32@,System.String)">
+            <summary>
+            根据表名称和过滤条件生成表数据的insert语句
+            </summary>
+            <param name="tblName">表结构</param>
+            <param name="Count">生成的insert语句的个数</param>
+            <param name="filter">过滤条件</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.CreateNewIDB">
+            <summary>
+            根据当前的数据库类型和连接字符串创建一个新的数据库操作对象
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

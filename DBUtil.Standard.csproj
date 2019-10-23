@@ -11,6 +11,10 @@
     <Product>jackletter</Product>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>E:\jackletter\github\DBUtil.Standard\DBUtil.Standard.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="MySql.Data" Version="8.0.17" />
     <PackageReference Include="Npgsql" Version="4.0.10" />

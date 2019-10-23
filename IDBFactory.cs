@@ -1,19 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.SqlClient;
-using System.Data.OleDb;
 using System.IO;
 
 namespace DBUtil
 {
+    /// <summary>
+    /// 根据不同的数据库创建数据库访问对象:IDBAccess
+    /// </summary>
     public class IDBFactory
     {
         /// <summary>
-        /// 创建IDB对象,注意.netcore中不支持oledb，这个组件中不再支持
+        /// 创建IDB对象,注意.netcore中不支持oledb，这里也不再支持oledb、access       
         /// </summary>
+        /// <example>
+        /// <code>
+        /// DBUtil.IDbAccess iDb = DBUtil.IDBFactory.CreateIDB("Data Source=.;Initial Catalog=JACKOA;User ID=sa;Password=sa;","SQLSERVER");
+        /// </code>
+        /// </example>
         /// <param name="connStr">
         /// <para>连接字符串:</para>
         /// <para>SQLSERVER:   Data Source=.;Initial Catalog=JACKOA;User ID=sa;Password=xx;</para>
@@ -65,7 +68,8 @@ namespace DBUtil
         }
 
         /// <summary>
-        /// 创建IDB对象
+        /// 创建IDB对象,注意.netcore中不支持oledb，这里也不再支持oledb、access
+        /// 示例:DBUtil.IDbAccess iDb = DBUtil.IDBFactory.CreateIDB("Data Source=.;Initial Catalog=JACKOA;User ID=sa;Password=sa;","SQLSERVER");
         /// </summary>
         /// <param name="connStr">
         /// <para>连接字符串:</para>
@@ -73,8 +77,6 @@ namespace DBUtil
         /// <para>ORACLE:   Data Source=ORCLmyvm2;Password=sys123;User ID=sys;DBA Privilege=SYSDBA;</para>
         /// <para>MYSQL:   Data Source=localhost;Initial Catalog=test;User ID=root;Password=xxxx;</para>
         /// <para>POSTGRESQL:   Server=localhost;Port=5432;UserId=postgres;Password=xxxx;Database=test</para>
-        /// <para>ACCESS:   Provider=Microsoft.Jet.OLEDB.4.0;Data Source=G:\work\Multiplan.mdb;</para>
-        /// <para>ACCESS:   Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Administrator\Desktop\demo.accdb;</para>
         /// <para>SQLITE:   Data Source=f:\demo.db;</para>
         /// </param>
         /// <param name="DBType">数据库类型:SQLSERVER、ORACLE、MYSQL、SQLITE、ACCESS、POSTGRESQL</param>
@@ -162,7 +164,8 @@ namespace DBUtil
             return iDb;
         }
 
-        /// <summary>不要在程序运行环境中修改此值,但可以在应用程序启动时进行赋值
+        /// <summary>
+        /// 不要在程序运行环境中修改此值,但可以在应用程序启动时进行赋值
         /// </summary>
         public static IDSNOManager IDSNOManage = new SimpleIDSNOManager();
 
