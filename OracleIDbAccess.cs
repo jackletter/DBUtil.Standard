@@ -456,7 +456,7 @@ namespace DBUtil
             {
                 ht.Add(i.Key, i.Value);
             }
-            return UpdateData(tableName, dic, filterStr, paraArr);
+            return UpdateData(tableName, ht, filterStr, paraArr);
         }
 
         /// <summary>
