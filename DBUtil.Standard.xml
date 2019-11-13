@@ -68,12 +68,19 @@
         <member name="M:DBUtil.IDbAccess.CreatePara(System.String,System.Object)">
             <summary>
             创建具有名称和值的参数
+            <para>示例：iDb.CreatePara("id",id);</para>
             </summary>
+            <param name="name">参数名,不用加前缀</param>
+            <param name="value">参数值</param>
             <returns>针对当前数据库类型的参数对象</returns>
         </member>
         <member name="M:DBUtil.IDbAccess.GetDateFilter(System.String,System.String,System.String,System.Boolean,System.Boolean)">
             <summary>
-            根据指定日期范围生成过滤字符串</summary>
+            根据指定日期范围生成过滤字符串
+            <para>
+            示例：iDb.GetDateFilter("CreateTime", DateTime.Now.ToString("yyyy-MM-dd"), DateTime.Now.ToString("yyyy-MM-dd 23:59:59"), false, true);//返回 "and CreateTime&gt;'2019-11-13' and CreateTime&lt;='2019-11-13 23:59:59'"
+            </para>
+            </summary>
             <param name="dateColumn">要进行过滤的字段名称</param>
             <param name="minDate">最小日期</param>
             <param name="MaxDate">最大日期</param>
@@ -91,8 +98,12 @@
         <member name="M:DBUtil.IDbAccess.ExecuteSql(System.String,System.Data.IDataParameter[])">
             <summary>
             执行sql语句
+            <para>
+            示例：iDb.ExecuteSql("update User set Sta=1 where Id=" + iDb.paraPrefix + "id", iDb.CreatePara("id", 1));
+            </para>
             </summary>
             <param name="strSql">要执行的sql语句</param>
+            <param name="paramArr">sql参数数组</param>
             <returns>受影响的行数</returns>
         </member>
         <member name="M:DBUtil.IDbAccess.ExecuteSql(System.String[])">
@@ -104,7 +115,11 @@
         </member>
         <member name="M:DBUtil.IDbAccess.ExecuteSql(System.String[],System.Data.IDataParameter[][])">
             <summary>
-            执行多个sql语句</summary>
+            执行多个sql语句
+            <para>
+            示例：iDb.ExecuteSql(new string[] { "update User set Sta=1 where Id=" + iDb.paraPrefix + "id", "", "update User setSta=2 wher Id=" + iDb.paraPrefix + "id" }, new IDataParameter[] { iDb.CreatePara("id", 1) }, new IDataParameter[] { iDb.CreatePara("id", 2) });
+            </para>
+            </summary>
             <param name="strSql">多个SQL语句的数组</param>
             <param name="paraArrs">多个SQL语句的参数对应的二维数组</param>
             <returns></returns>
@@ -290,6 +305,15 @@
             <param name="isReturnNull">false:查询结果为null就返回""否则返回null</param>
             <returns>返回查到的第一行第一列的值</returns>
         </member>
+        <member name="M:DBUtil.IDbAccess.GetFirstColumnString(System.String,System.Boolean,System.Data.IDbDataParameter[])">
+            <summary>
+            返回查到的第一行第一列的字符串值(该方法将调用GetFirstColumn,并将返回的对象转换成字符串)
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="paraArr">sql语句中的参数数组</param>
+            <param name="isReturnNull">false:查询结果为null就返回""否则返回null</param>
+            <returns>返回查到的第一行第一列的值</returns>
+        </member>
         <member name="M:DBUtil.IDbAccess.GetDataReader(System.String)">
             <summary>
             获取阅读器
@@ -400,13 +424,11 @@
         </member>
         <member name="M:DBUtil.IDBFactory.CreateIDB(System.String,System.String)">
             <summary>
-            创建IDB对象,注意.netcore中不支持oledb，这里也不再支持oledb、access       
-            </summary>
-            <example>
-            <code>
-            DBUtil.IDbAccess iDb = DBUtil.IDBFactory.CreateIDB("Data Source=.;Initial Catalog=JACKOA;User ID=sa;Password=sa;","SQLSERVER");
-            </code>
-            </example>
+            创建IDB对象,注意.netcore中不支持oledb，这里也不再支持oledb、access 
+            <para>
+            示例：DBUtil.IDbAccess iDb = DBUtil.IDBFactory.CreateIDB("Data Source=.;Initial Catalog=JACKOA;User ID=sa;Password=sa;","SQLSERVER");
+            </para>
+            </summary>        
             <param name="connStr">
             <para>连接字符串:</para>
             <para>SQLSERVER:   Data Source=.;Initial Catalog=JACKOA;User ID=sa;Password=xx;</para>
@@ -421,7 +443,9 @@
         <member name="M:DBUtil.IDBFactory.CreateIDB(System.String,DBUtil.DataBaseType)">
             <summary>
             创建IDB对象,注意.netcore中不支持oledb，这里也不再支持oledb、access
-            示例:DBUtil.IDbAccess iDb = DBUtil.IDBFactory.CreateIDB("Data Source=.;Initial Catalog=JACKOA;User ID=sa;Password=sa;","SQLSERVER");
+            <para>
+            示例：DBUtil.IDbAccess iDb = DBUtil.IDBFactory.CreateIDB("Data Source=.;Initial Catalog=JACKOA;User ID=sa;Password=sa;","SQLSERVER");
+            </para>
             </summary>
             <param name="connStr">
             <para>连接字符串:</para>
@@ -434,9 +458,39 @@
             <param name="DBType">数据库类型:SQLSERVER、ORACLE、MYSQL、SQLITE、ACCESS、POSTGRESQL</param>
             <returns></returns>
         </member>
+        <member name="M:DBUtil.IDBFactory.CreateSQLiteDB(System.String)">
+            <summary>
+            创建Sqlite数据库文件,如果已存在就报错
+            <para>
+            示例:IDBFactory.CreateSQLiteDB(@"D:\demo.db");
+            </para>
+            </summary>
+            <param name="absPath">文件绝对路径</param>
+        </member>
+        <member name="M:DBUtil.IDBFactory.GetSQLiteConnectionString(System.String)">
+            <summary>
+            获取Sqlite数据库连接方式
+            <para>
+            示例：IDBFactory.GetSQLiteConnectionString(@"D:\demo.db");//返回"Data Source=D:\demo.db"
+            </para>
+            </summary>
+            <param name="absPath">文件绝对路径</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBUtil.IDBFactory.GetSQLiteConnectionString(System.String,System.String)">
+            <summary>
+            获取Sqlite数据库连接方式
+            <para>
+            示例：IDBFactory.GetSQLiteConnectionString(@"D:\demo.db","123456");//返回"Data Source=D:\demo.db;Password=123456"
+            </para>
+            </summary>
+            <param name="absPath">文件绝对路径</param>
+            <param name="pwd">sqlite文件密码</param>
+            <returns></returns>
+        </member>
         <member name="F:DBUtil.IDBFactory.IDSNOManage">
             <summary>
-            不要在程序运行环境中修改此值,但可以在应用程序启动时进行赋值
+            数据库字段ID和自动编号生成器,一般不要在程序运行环境中修改此值(如果需要扩展,可以在应用程序启动时进行赋值)
             </summary>
         </member>
         <member name="T:DBUtil.IDSNOManager">
@@ -447,7 +501,11 @@
         <member name="M:DBUtil.IDSNOManager.NewID(DBUtil.IDbAccess,System.String,System.String)">
             <summary>
             根据表名和列名生成ID,第一次生成后就不需要再访问数据库,频率高时使用
+            <para>
+            示例：iDb.IDSNOManager.NewID(iDb, "User", "Id");//返回新生成的ID
+            </para>
             </summary>
+            <param name="iDb">数据库访问对象</param>
             <param name="tableName">表名</param>
             <param name="colName">列名</param>
             <returns>新生成的ID</returns>
@@ -456,17 +514,18 @@
             <summary>
             使用程序锁直接从表的字段里面算得递增值,频率低时使用
             </summary>
+            <param name="iDb">数据库访问对象</param>
             <param name="tableName">表名</param>
             <param name="colName">列名</param>
             <returns>新生成的ID</returns>
         </member>
         <member name="M:DBUtil.IDSNOManager.ResetID(System.String,System.String,System.Nullable{System.Int32})">
             <summary>
-            重置一个表的ID
+            重置一个表的ID,在内存中为指定表的指定字段设置ID
             </summary>
             <param name="tableName">表名</param>
             <param name="colName">列名</param>
-            <param name="val">为null时直接删除这个表和这个列的ID生成控制</param>
+            <param name="val">为null时直接从内存中删除这个表和这个列的ID生成控制</param>
             <returns></returns>
         </member>
         <member name="M:DBUtil.IDSNOManager.ShowCurrentIDs(System.String,System.String)">
@@ -485,15 +544,7 @@
             <param name="colName">列名</param>
             <param name="val">初始化值,默认0</param>
         </member>
-        <member name="M:DBUtil.IDSNOManager.NewSNO(DBUtil.IDbAccess,System.String,System.String,System.Collections.Generic.List{DBUtil.SerialChunk})">
-            <summary>
-            根据表名列名和格式块创建新的自动编号
-            </summary>
-            <param name="tableName">表名</param>
-            <param name="colName">列名</param>
-            <param name="chunks">格式块,格式块的格式参照类：SerialTrunk</param>
-            <returns>生成的自动编号</returns>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:DBUtil.IDSNOManager.NewSNO(DBUtil.IDbAccess,System.String,System.String,System.Collections.Generic.List{DBUtil.SerialChunk})" -->
         <member name="M:DBUtil.IDSNOManager.ResetSNO(System.String,System.String,System.Collections.Generic.List{DBUtil.SerialChunk},System.String)">
             <summary>
             重置一个序列号控制项的当前编号
@@ -755,6 +806,15 @@
             <returns>返回查到的第一行第一列的值</returns>
         </member>
         <member name="M:DBUtil.MySqlIDbAccess.GetFirstColumnString(System.String,System.Data.IDbDataParameter[],System.Boolean)">
+            <summary>
+            返回查到的第一行第一列的字符串值
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="paraArr">sql语句中的参数数组</param>
+            <param name="isReturnNull">false:查询结果为null就返回""否则返回null</param>
+            <returns>返回查到的第一行第一列的值</returns>
+        </member>
+        <member name="M:DBUtil.MySqlIDbAccess.GetFirstColumnString(System.String,System.Boolean,System.Data.IDbDataParameter[])">
             <summary>
             返回查到的第一行第一列的字符串值
             </summary>
@@ -1115,6 +1175,15 @@
             <param name="isReturnNull">false:查询结果为null就返回""否则返回null</param>
             <returns>返回查到的第一行第一列的值</returns>
         </member>
+        <member name="M:DBUtil.OracleIDbAccess.GetFirstColumnString(System.String,System.Boolean,System.Data.IDbDataParameter[])">
+            <summary>
+            返回查到的第一行第一列的字符串值
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="paraArr">sql语句中的参数数组</param>
+            <param name="isReturnNull">false:查询结果为null就返回""否则返回null</param>
+            <returns>返回查到的第一行第一列的值</returns>
+        </member>
         <member name="M:DBUtil.OracleIDbAccess.GetDataReader(System.String)">
             <summary>
             获取阅读器
@@ -1467,6 +1536,15 @@
             <param name="isReturnNull">false:查询结果为null就返回""否则返回null</param>
             <returns>返回查到的第一行第一列的值</returns>
         </member>
+        <member name="M:DBUtil.PostgreSqlIDbAccess.GetFirstColumnString(System.String,System.Boolean,System.Data.IDbDataParameter[])">
+            <summary>
+            返回查到的第一行第一列的字符串值
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="paraArr">sql语句中的参数数组</param>
+            <param name="isReturnNull">false:查询结果为null就返回""否则返回null</param>
+            <returns>返回查到的第一行第一列的值</returns>
+        </member>
         <member name="M:DBUtil.PostgreSqlIDbAccess.GetDataReader(System.String)">
             <summary>
             获取阅读器
@@ -1779,7 +1857,12 @@
             序列块的唯一构造函数
             </summary>
             <param name="name">序列块的名称,程序锁的组成部分(表名+列名+所有的序列块名)</param>
-            <param name="formatStr">格式参见SerialChunk的属性FormatStr</param>
+            <param name="formatStr">
+            序列号块的格式控制(不允许出现多余的空格等字符,严格按格式填写,注意大小写),有三种格式:
+            <para>格式1: SerialNo[start,incr,len,end,cyclemodel][varlen]</para>
+            <para>格式2: Text[TextVal][len]</para>
+            <para>格式3: DateTime[dateformate][len][incycle]</para>
+            </param>
         </member>
         <member name="P:DBUtil.SerialChunk.Name">
             <summary>
@@ -2130,6 +2213,15 @@
             <param name="isReturnNull">false:查询结果为null就返回""否则返回null</param>
             <returns>返回查到的第一行第一列的值</returns>
         </member>
+        <member name="M:DBUtil.SQLiteIDbAccess.GetFirstColumnString(System.String,System.Boolean,System.Data.IDbDataParameter[])">
+            <summary>
+            返回查到的第一行第一列的字符串值
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="paraArr">sql语句中的参数数组</param>
+            <param name="isReturnNull">false:查询结果为null就返回""否则返回null</param>
+            <returns>返回查到的第一行第一列的值</returns>
+        </member>
         <member name="M:DBUtil.SQLiteIDbAccess.GetDataReader(System.String)">
             <summary>
             获取阅读器
@@ -2230,6 +2322,51 @@
             根据当前的数据库类型和连接字符串创建一个新的数据库操作对象
             </summary>
             <returns></returns>
+        </member>
+        <member name="T:DBUtil.SqlServerIDbAccess">
+            <summary>
+            SqlServer数据库访问对象
+            </summary>
+        </member>
+        <member name="P:DBUtil.SqlServerIDbAccess.IDSNOManager">
+            <summary>
+            ID和编号生成器
+            </summary>
+        </member>
+        <member name="P:DBUtil.SqlServerIDbAccess.IsKeepConnect">
+            <summary>
+            是否保持连接打开
+            </summary>
+        </member>
+        <member name="P:DBUtil.SqlServerIDbAccess.tran">
+            <summary>
+            事务管理对象
+            </summary>
+        </member>
+        <member name="P:DBUtil.SqlServerIDbAccess.ConnectionString">
+            <summary>
+            连接字符串
+            </summary>
+        </member>
+        <member name="P:DBUtil.SqlServerIDbAccess.conn">
+            <summary>
+            连接对象
+            </summary>
+        </member>
+        <member name="P:DBUtil.SqlServerIDbAccess.DataBaseType">
+            <summary>
+            数据库类型
+            </summary>
+        </member>
+        <member name="P:DBUtil.SqlServerIDbAccess.IsOpen">
+            <summary>
+            连接是否打开
+            </summary>
+        </member>
+        <member name="P:DBUtil.SqlServerIDbAccess.IsTran">
+            <summary>
+            是否开启了事务
+            </summary>
         </member>
         <member name="M:DBUtil.SqlServerIDbAccess.OpenTest">
             <summary>
@@ -2474,6 +2611,15 @@
             <returns>返回查到的第一行第一列的值</returns>
         </member>
         <member name="M:DBUtil.SqlServerIDbAccess.GetFirstColumnString(System.String,System.Data.IDbDataParameter[],System.Boolean)">
+            <summary>
+            返回查到的第一行第一列的字符串值
+            </summary>
+            <param name="strSql">sql语句</param>
+            <param name="paraArr">sql语句中的参数数组</param>
+            <param name="isReturnNull">false:查询结果为null就返回""否则返回null</param>
+            <returns>返回查到的第一行第一列的值</returns>
+        </member>
+        <member name="M:DBUtil.SqlServerIDbAccess.GetFirstColumnString(System.String,System.Boolean,System.Data.IDbDataParameter[])">
             <summary>
             返回查到的第一行第一列的字符串值
             </summary>

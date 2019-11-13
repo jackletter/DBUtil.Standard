@@ -68,12 +68,19 @@ namespace DBUtil
 
         /// <summary>
         /// 创建具有名称和值的参数
+        /// <para>示例：iDb.CreatePara("id",id);</para>
         /// </summary>
+        /// <param name="name">参数名,不用加前缀</param>
+        /// <param name="value">参数值</param>
         /// <returns>针对当前数据库类型的参数对象</returns>
         IDbDataParameter CreatePara(string name, object value);
 
         /// <summary>
-        /// 根据指定日期范围生成过滤字符串</summary>
+        /// 根据指定日期范围生成过滤字符串
+        /// <para>
+        /// 示例：iDb.GetDateFilter("CreateTime", DateTime.Now.ToString("yyyy-MM-dd"), DateTime.Now.ToString("yyyy-MM-dd 23:59:59"), false, true);//返回 "and CreateTime&gt;'2019-11-13' and CreateTime&lt;='2019-11-13 23:59:59'"
+        /// </para>
+        /// </summary>
         /// <param name="dateColumn">要进行过滤的字段名称</param>
         /// <param name="minDate">最小日期</param>
         /// <param name="MaxDate">最大日期</param>
@@ -91,10 +98,14 @@ namespace DBUtil
 
         /// <summary>
         /// 执行sql语句
+        /// <para>
+        /// 示例：iDb.ExecuteSql("update User set Sta=1 where Id=" + iDb.paraPrefix + "id", iDb.CreatePara("id", 1));
+        /// </para>
         /// </summary>
         /// <param name="strSql">要执行的sql语句</param>
+        /// <param name="paramArr">sql参数数组</param>
         /// <returns>受影响的行数</returns>
-        int ExecuteSql(string strSql, IDataParameter[] paramArr);
+        int ExecuteSql(string strSql, params IDataParameter[] paramArr);
 
         /// <summary>
         /// 执行多个sql语句
@@ -104,11 +115,15 @@ namespace DBUtil
         void ExecuteSql(string[] strSql);
 
         /// <summary>
-        /// 执行多个sql语句</summary>
+        /// 执行多个sql语句
+        /// <para>
+        /// 示例：iDb.ExecuteSql(new string[] { "update User set Sta=1 where Id=" + iDb.paraPrefix + "id", "", "update User setSta=2 wher Id=" + iDb.paraPrefix + "id" }, new IDataParameter[] { iDb.CreatePara("id", 1) }, new IDataParameter[] { iDb.CreatePara("id", 2) });
+        /// </para>
+        /// </summary>
         /// <param name="strSql">多个SQL语句的数组</param>
         /// <param name="paraArrs">多个SQL语句的参数对应的二维数组</param>
         /// <returns></returns>
-        void ExecuteSql(string[] strSql, IDataParameter[][] paraArrs);
+        void ExecuteSql(string[] strSql, params IDataParameter[][] paraArrs);
 
         /// <summary>
         /// 向一个表中添加一行数据
@@ -124,7 +139,7 @@ namespace DBUtil
         /// <param name="tableName">表名</param>
         /// <param name="dic">列名和值的键值对</param>
         /// <returns>是否插入成功</returns>
-        bool AddData(string tableName, Dictionary<string,object> dic);
+        bool AddData(string tableName, Dictionary<string, object> dic);
 
         /// <summary>
         /// 根据键值表中的数据向表中更新数据
@@ -152,7 +167,7 @@ namespace DBUtil
         /// <param name="filterStr">过滤条件以and开头</param>
         /// <param name="paraArr">过滤条件中的参数数组</param>
         /// <returns>是否更新成功</returns>
-        bool UpdateData(string tableName, Hashtable ht, string filterStr, IDbDataParameter[] paraArr);
+        bool UpdateData(string tableName, Hashtable ht, string filterStr, params IDbDataParameter[] paraArr);
 
         /// <summary>
         /// 根据键值表中的数据向表中更新数据
@@ -162,7 +177,7 @@ namespace DBUtil
         /// <param name="filterStr">过滤条件以and开头</param>
         /// <param name="paraArr">过滤条件中的参数数组</param>
         /// <returns>是否更新成功</returns>
-        bool UpdateData(string tableName, Dictionary<string, object> dic, string filterStr, IDbDataParameter[] paraArr);
+        bool UpdateData(string tableName, Dictionary<string, object> dic, string filterStr, params IDbDataParameter[] paraArr);
 
         /// <summary>
         /// 向表中更新数据并根据指定的键值对作为关键字更新(关键字默认不参与更新)
@@ -210,7 +225,7 @@ namespace DBUtil
         /// <param name="filterStr">过滤条件以and开头</param>
         /// <param name="paraArr">过滤条件中的参数数组</param>
         /// <returns>是否更新成功</returns>
-        bool UpdateOrAdd(string tableName, Hashtable ht, string filterStr, IDbDataParameter[] paraArr);
+        bool UpdateOrAdd(string tableName, Hashtable ht, string filterStr, params IDbDataParameter[] paraArr);
 
         /// <summary>
         /// 根据键值表中的数据向表中添加或更新数据
@@ -220,7 +235,7 @@ namespace DBUtil
         /// <param name="filterStr">过滤条件以and开头</param>
         /// <param name="paraArr">过滤条件中的参数数组</param>
         /// <returns>是否更新成功</returns>
-        bool UpdateOrAdd(string tableName, Dictionary<string, object> dic, string filterStr, IDbDataParameter[] paraArr);
+        bool UpdateOrAdd(string tableName, Dictionary<string, object> dic, string filterStr, params IDbDataParameter[] paraArr);
 
         /// <summary>
         /// 向表中添加或更新数据并根据里面的键值对作为关键字更新(关键字默认不参与更新)
@@ -257,7 +272,7 @@ namespace DBUtil
         /// <param name="strFilter">过滤条件</param>
         /// <param name="paraArr">过滤条件中的参数集合</param>
         /// <returns>返回受影响的行数</returns>
-        int DeleteTableRow(string tableName, string strFilter, IDbDataParameter[] paraArr);
+        int DeleteTableRow(string tableName, string strFilter, params IDbDataParameter[] paraArr);
 
         /// <summary>
         /// 返回查到的第一行第一列的值
@@ -272,7 +287,7 @@ namespace DBUtil
         /// <param name="strSql">sql语句</param>
         /// <param name="paraArr">sql语句参数</param>
         /// <returns>返回查到的第一行第一列的值</returns>
-        object GetFirstColumn(string strSql, IDbDataParameter[] paraArr);
+        object GetFirstColumn(string strSql, params IDbDataParameter[] paraArr);
 
         /// <summary>
         /// 返回查到的第一行第一列的字符串值(该方法将调用GetFirstColumn,并将返回的对象转换成字符串)
@@ -292,6 +307,15 @@ namespace DBUtil
         string GetFirstColumnString(string strSql, IDbDataParameter[] paraArr, bool isReturnNull = false);
 
         /// <summary>
+        /// 返回查到的第一行第一列的字符串值(该方法将调用GetFirstColumn,并将返回的对象转换成字符串)
+        /// </summary>
+        /// <param name="strSql">sql语句</param>
+        /// <param name="paraArr">sql语句中的参数数组</param>
+        /// <param name="isReturnNull">false:查询结果为null就返回""否则返回null</param>
+        /// <returns>返回查到的第一行第一列的值</returns>
+        string GetFirstColumnString(string strSql, bool isReturnNull = false, params IDbDataParameter[] paraArr);
+
+        /// <summary>
         /// 获取阅读器
         /// </summary>
         /// <param name="strSql">sql语句</param>
@@ -304,7 +328,7 @@ namespace DBUtil
         /// <param name="strSql">sql语句</param>
         /// <param name="paraArr">sql语句参数</param>
         /// <returns>返回阅读器</returns>
-        IDataReader GetDataReader(string strSql, IDbDataParameter[] paraArr);
+        IDataReader GetDataReader(string strSql, params IDbDataParameter[] paraArr);
 
         /// <summary>
         /// 返回查询结果的数据集
@@ -319,7 +343,7 @@ namespace DBUtil
         /// <param name="strSql">sql语句</param>
         /// <param name="paraArr">sql语句参数</param>
         /// <returns>返回的查询结果集</returns>
-        DataSet GetDataSet(string strSql, IDbDataParameter[] paraArr);
+        DataSet GetDataSet(string strSql, params IDbDataParameter[] paraArr);
 
         /// <summary>
         /// 返回查询结果的数据表
@@ -334,7 +358,7 @@ namespace DBUtil
         /// <param name="strSql">sql语句</param>
         /// <param name="paraArr">sql语句参数</param>
         /// <returns>返回的查询结果集</returns>
-        DataTable GetDataTable(string strSql, IDbDataParameter[] paraArr);
+        DataTable GetDataTable(string strSql, params IDbDataParameter[] paraArr);
 
         /// <summary>
         /// 开启事务

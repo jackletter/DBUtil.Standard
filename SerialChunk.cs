@@ -21,10 +21,14 @@ namespace DBUtil
         /// 序列块的唯一构造函数
         /// </summary>
         /// <param name="name">序列块的名称,程序锁的组成部分(表名+列名+所有的序列块名)</param>
-        /// <param name="formatStr">格式参见SerialChunk的属性FormatStr</param>
+        /// <param name="formatStr">
+        /// 序列号块的格式控制(不允许出现多余的空格等字符,严格按格式填写,注意大小写),有三种格式:
+        /// <para>格式1: SerialNo[start,incr,len,end,cyclemodel][varlen]</para>
+        /// <para>格式2: Text[TextVal][len]</para>
+        /// <para>格式3: DateTime[dateformate][len][incycle]</para>
+        /// </param>
         public SerialChunk(string name, string formatStr)
         {
-            new List<SerialChunk>() { new SerialChunk("FLOWNO", "Text[FLOWNO][6]"),new SerialChunk("DateTime", "DateTime[yyyyMMdd][8][incycle]"),new SerialChunk("SerialNo", "SerialNo[1,1,6,,day]") };
             this._name = name;
             this._formatstr = formatStr;
         }

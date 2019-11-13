@@ -12,7 +12,11 @@ namespace DBUtil
     {
         /// <summary>
         /// 根据表名和列名生成ID,第一次生成后就不需要再访问数据库,频率高时使用
+        /// <para>
+        /// 示例：iDb.IDSNOManager.NewID(iDb, "User", "Id");//返回新生成的ID
+        /// </para>
         /// </summary>
+        /// <param name="iDb">数据库访问对象</param>
         /// <param name="tableName">表名</param>
         /// <param name="colName">列名</param>
         /// <returns>新生成的ID</returns>
@@ -21,17 +25,18 @@ namespace DBUtil
         /// <summary>
         /// 使用程序锁直接从表的字段里面算得递增值,频率低时使用
         /// </summary>
+        /// <param name="iDb">数据库访问对象</param>
         /// <param name="tableName">表名</param>
         /// <param name="colName">列名</param>
         /// <returns>新生成的ID</returns>
         int NewIDForce(IDbAccess iDb, string tableName, string colName);
 
         /// <summary>
-        /// 重置一个表的ID
+        /// 重置一个表的ID,在内存中为指定表的指定字段设置ID
         /// </summary>
         /// <param name="tableName">表名</param>
         /// <param name="colName">列名</param>
-        /// <param name="val">为null时直接删除这个表和这个列的ID生成控制</param>
+        /// <param name="val">为null时直接从内存中删除这个表和这个列的ID生成控制</param>
         /// <returns></returns>
         void ResetID(string tableName, string colName, int? val);
 
@@ -54,10 +59,16 @@ namespace DBUtil
 
         /// <summary>
         /// 根据表名列名和格式块创建新的自动编号
+        /// <para>示例：如果要为某个字段每天自动编号(序列号长度为6,从1开始),那么如下所示:</para>
+        /// <para>
+        /// iDb.IDSNOManager.NewSNO(iDb, "SysUser", "BankNo", new List&lt;SerialChunk&gt;() { new SerialChunk("FLOWNO", "Text[FLOWNO][6]"), new SerialChunk("DateTime", "DateTime[yyyyMMdd][8][incycle]"), new SerialChunk("SerialNo", "SerialNo[1,1,6,,day]") });
+        /// </para>
+        /// <para>上面代码返回：FLOWNO20191113000001</para>
         /// </summary>
+        /// <param name="iDb">数据库访问对象</param>
         /// <param name="tableName">表名</param>
         /// <param name="colName">列名</param>
-        /// <param name="chunks">格式块,格式块的格式参照类：SerialTrunk</param>
+        /// <param name="chunks">格式块,参照类：<see cref="SerialChunk"/></param>
         /// <returns>生成的自动编号</returns>
         string NewSNO(IDbAccess iDb, string tableName, string colName, List<SerialChunk> chunks);
 
@@ -67,6 +78,7 @@ namespace DBUtil
         /// <param name="tableName">表名</param>
         /// <param name="colName">列名</param>
         /// <param name="trunks">chunk集合(这里的每个chunk只要求Name属性不为空即可)</param>
+        /// <param name="sno">指定的编号</param>
         /// <returns></returns>
         void ResetSNO(string tableName, string colName, List<SerialChunk> trunks, string sno);
 
@@ -78,7 +90,5 @@ namespace DBUtil
         /// <param name="trunks">如果指定了trunks就显示当前格式控制下的序列号情况(根据trunk顺序及Name判别唯一)</param>
         /// <returns></returns>
         List<string[]> ShowCurrentSNOs(string tableName, string colName, List<SerialChunk> trunks);
-
-
     }
 }

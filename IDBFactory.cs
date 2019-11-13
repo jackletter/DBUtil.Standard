@@ -10,13 +10,11 @@ namespace DBUtil
     public class IDBFactory
     {
         /// <summary>
-        /// 创建IDB对象,注意.netcore中不支持oledb，这里也不再支持oledb、access       
-        /// </summary>
-        /// <example>
-        /// <code>
-        /// DBUtil.IDbAccess iDb = DBUtil.IDBFactory.CreateIDB("Data Source=.;Initial Catalog=JACKOA;User ID=sa;Password=sa;","SQLSERVER");
-        /// </code>
-        /// </example>
+        /// 创建IDB对象,注意.netcore中不支持oledb，这里也不再支持oledb、access 
+        /// <para>
+        /// 示例：DBUtil.IDbAccess iDb = DBUtil.IDBFactory.CreateIDB("Data Source=.;Initial Catalog=JACKOA;User ID=sa;Password=sa;","SQLSERVER");
+        /// </para>
+        /// </summary>        
         /// <param name="connStr">
         /// <para>连接字符串:</para>
         /// <para>SQLSERVER:   Data Source=.;Initial Catalog=JACKOA;User ID=sa;Password=xx;</para>
@@ -69,7 +67,9 @@ namespace DBUtil
 
         /// <summary>
         /// 创建IDB对象,注意.netcore中不支持oledb，这里也不再支持oledb、access
-        /// 示例:DBUtil.IDbAccess iDb = DBUtil.IDBFactory.CreateIDB("Data Source=.;Initial Catalog=JACKOA;User ID=sa;Password=sa;","SQLSERVER");
+        /// <para>
+        /// 示例：DBUtil.IDbAccess iDb = DBUtil.IDBFactory.CreateIDB("Data Source=.;Initial Catalog=JACKOA;User ID=sa;Password=sa;","SQLSERVER");
+        /// </para>
         /// </summary>
         /// <param name="connStr">
         /// <para>连接字符串:</para>
@@ -124,6 +124,13 @@ namespace DBUtil
             return iDb;
         }
 
+        /// <summary>
+        /// 创建Sqlite数据库文件,如果已存在就报错
+        /// <para>
+        /// 示例:IDBFactory.CreateSQLiteDB(@"D:\demo.db");
+        /// </para>
+        /// </summary>
+        /// <param name="absPath">文件绝对路径</param>
         public static void CreateSQLiteDB(string absPath)
         {
             if (File.Exists(absPath))
@@ -133,11 +140,28 @@ namespace DBUtil
             System.Data.SQLite.SQLiteConnection.CreateFile(absPath);
         }
 
+        /// <summary>
+        /// 获取Sqlite数据库连接方式
+        /// <para>
+        /// 示例：IDBFactory.GetSQLiteConnectionString(@"D:\demo.db");//返回"Data Source=D:\demo.db"
+        /// </para>
+        /// </summary>
+        /// <param name="absPath">文件绝对路径</param>
+        /// <returns></returns>
         public static string GetSQLiteConnectionString(string absPath)
         {
             return GetSQLiteConnectionString(absPath, null);
         }
 
+        /// <summary>
+        /// 获取Sqlite数据库连接方式
+        /// <para>
+        /// 示例：IDBFactory.GetSQLiteConnectionString(@"D:\demo.db","123456");//返回"Data Source=D:\demo.db;Password=123456"
+        /// </para>
+        /// </summary>
+        /// <param name="absPath">文件绝对路径</param>
+        /// <param name="pwd">sqlite文件密码</param>
+        /// <returns></returns>
         public static string GetSQLiteConnectionString(string absPath, string pwd)
         {
             string str;
@@ -165,7 +189,7 @@ namespace DBUtil
         }
 
         /// <summary>
-        /// 不要在程序运行环境中修改此值,但可以在应用程序启动时进行赋值
+        /// 数据库字段ID和自动编号生成器,一般不要在程序运行环境中修改此值(如果需要扩展,可以在应用程序启动时进行赋值)
         /// </summary>
         public static IDSNOManager IDSNOManage = new SimpleIDSNOManager();
 

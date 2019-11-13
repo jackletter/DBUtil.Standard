@@ -835,6 +835,18 @@ namespace DBUtil
             }
         }
 
+        /// <summary>
+        /// 返回查到的第一行第一列的字符串值
+        /// </summary>
+        /// <param name="strSql">sql语句</param>
+        /// <param name="paraArr">sql语句中的参数数组</param>
+        /// <param name="isReturnNull">false:查询结果为null就返回""否则返回null</param>
+        /// <returns>返回查到的第一行第一列的值</returns>
+        public string GetFirstColumnString(string strSql, bool isReturnNull = false, params IDbDataParameter[] paraArr)
+        {
+            return GetFirstColumnString(strSql, paraArr, isReturnNull);
+        }
+
 
         /// <summary>
         /// 获取阅读器

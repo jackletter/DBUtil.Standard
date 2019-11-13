@@ -5,6 +5,9 @@ using System.Text;
 
 namespace DBUtil
 {
+    /// <summary>
+    /// 表结构描述类(实验中...)
+    /// </summary>
     public class TableStruct
     {
         public string Name { set; get; }

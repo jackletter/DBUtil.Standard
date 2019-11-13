@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace DBUtil
 {
+    /// <summary>
+    /// 表结构描述类(实验中...)
+    /// </summary>
     public class PostgreSqlTableStruct : TableStruct
     {
         public List<Column> Columns = new List<Column>();

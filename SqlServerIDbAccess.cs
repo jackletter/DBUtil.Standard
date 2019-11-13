@@ -9,16 +9,49 @@ using System.Text.RegularExpressions;
 
 namespace DBUtil
 {
+    /// <summary>
+    /// SqlServer数据库访问对象
+    /// </summary>
     public class SqlServerIDbAccess : IDbAccess
     {
+        /// <summary>
+        /// ID和编号生成器
+        /// </summary>
         public IDSNOManager IDSNOManager { get { return IDBFactory.IDSNOManage; } }
+
+        /// <summary>
+        /// 是否保持连接打开
+        /// </summary>
         public bool IsKeepConnect { set; get; }
+
+        /// <summary>
+        /// 事务管理对象
+        /// </summary>
         public IDbTransaction tran { set; get; }
+
+        /// <summary>
+        /// 连接字符串
+        /// </summary>
         public string ConnectionString { get; set; }
+
+        /// <summary>
+        /// 连接对象
+        /// </summary>
         public IDbConnection conn { set; get; }
+
+        /// <summary>
+        /// 数据库类型
+        /// </summary>
         public DataBaseType DataBaseType { get; set; }
 
+        /// <summary>
+        /// 连接是否打开
+        /// </summary>
         public bool IsOpen { set; get; }
+
+        /// <summary>
+        /// 是否开启了事务
+        /// </summary>
 
         public bool IsTran { set; get; }
 
@@ -739,6 +772,18 @@ namespace DBUtil
             {
                 return obj.ToString();
             }
+        }
+
+        /// <summary>
+        /// 返回查到的第一行第一列的字符串值
+        /// </summary>
+        /// <param name="strSql">sql语句</param>
+        /// <param name="paraArr">sql语句中的参数数组</param>
+        /// <param name="isReturnNull">false:查询结果为null就返回""否则返回null</param>
+        /// <returns>返回查到的第一行第一列的值</returns>
+        public string GetFirstColumnString(string strSql, bool isReturnNull = false, params IDbDataParameter[] paraArr)
+        {
+            return GetFirstColumnString(strSql, paraArr, isReturnNull);
         }
 
 
