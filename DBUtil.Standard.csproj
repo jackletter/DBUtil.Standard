@@ -3,13 +3,12 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageProjectUrl>https://github.com/jackletter/DBUtil.Standard</PackageProjectUrl>
-    <Description>DBHelper扩展封装，内嵌ID、编号生成等
-运行平台：.net standard2.0；支持数据库：sqlserver、mysql、oracle、postgresql、sqlite</Description>
+    <Description>.net core下常用的数据库访问工具,支持sqlserver、oracle、mysql、postgresql、sqlite；内嵌全局ID生成、编号生成</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Authors>jackletter</Authors>
     <Company>jackletter</Company>
     <Product>jackletter</Product>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

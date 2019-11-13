@@ -544,7 +544,21 @@
             <param name="colName">列名</param>
             <param name="val">初始化值,默认0</param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:DBUtil.IDSNOManager.NewSNO(DBUtil.IDbAccess,System.String,System.String,System.Collections.Generic.List{DBUtil.SerialChunk})" -->
+        <member name="M:DBUtil.IDSNOManager.NewSNO(DBUtil.IDbAccess,System.String,System.String,System.Collections.Generic.List{DBUtil.SerialChunk})">
+            <summary>
+            根据表名列名和格式块创建新的自动编号
+            <para>示例：如果要为某个字段每天自动编号(序列号长度为6,从1开始),那么如下所示:</para>
+            <para>
+            iDb.IDSNOManager.NewSNO(iDb, "SysUser", "BankNo", new List&lt;SerialChunk&gt;() { new SerialChunk("FLOWNO", "Text[FLOWNO][6]"), new SerialChunk("DateTime", "DateTime[yyyyMMdd][8][incycle]"), new SerialChunk("SerialNo", "SerialNo[1,1,6,,day]") });
+            </para>
+            <para>上面代码返回：FLOWNO20191113000001</para>
+            </summary>
+            <param name="iDb">数据库访问对象</param>
+            <param name="tableName">表名</param>
+            <param name="colName">列名</param>
+            <param name="chunks">格式块,参照类：<see cref="T:DBUtil.SerialChunk"/></param>
+            <returns>生成的自动编号</returns>
+        </member>
         <member name="M:DBUtil.IDSNOManager.ResetSNO(System.String,System.String,System.Collections.Generic.List{DBUtil.SerialChunk},System.String)">
             <summary>
             重置一个序列号控制项的当前编号
@@ -552,6 +566,7 @@
             <param name="tableName">表名</param>
             <param name="colName">列名</param>
             <param name="trunks">chunk集合(这里的每个chunk只要求Name属性不为空即可)</param>
+            <param name="sno">指定的编号</param>
             <returns></returns>
         </member>
         <member name="M:DBUtil.IDSNOManager.ShowCurrentSNOs(System.String,System.String,System.Collections.Generic.List{DBUtil.SerialChunk})">
@@ -1841,6 +1856,26 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:DBUtil.PostgreSqlTableStruct">
+            <summary>
+            表结构描述类(实验中...)
+            </summary>
+        </member>
+        <member name="T:DBUtil.Result">
+            <summary>
+            通用操作结果类
+            </summary>
+        </member>
+        <member name="P:DBUtil.Result.Success">
+            <summary>
+            是否成功
+            </summary>
+        </member>
+        <member name="P:DBUtil.Result.Data">
+            <summary>
+            返回结果(错误提示或数据)
+            </summary>
+        </member>
         <member name="T:DBUtil.SerialChunk">
             <summary>
             字段的编号格式控制块
@@ -2915,6 +2950,11 @@
             根据当前的数据库类型和连接字符串创建一个新的数据库操作对象
             </summary>
             <returns></returns>
+        </member>
+        <member name="T:DBUtil.TableStruct">
+            <summary>
+            表结构描述类(实验中...)
+            </summary>
         </member>
     </members>
 </doc>
